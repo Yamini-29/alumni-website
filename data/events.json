@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Annual Alumni Meet 2026",
+    "date": "March 15, 2026",
+    "description": "Join us for a grand reunion with fellow alumni.",
+    "image": "/images/event1.jpg"
+  },
+  {
+    "title": "Tech Talk by Alumni",
+    "date": "April 10, 2026",
+    "description": "An interactive session with industry experts.",
+    "image": "/images/event2.jpg"
+  },
+  {
+    "title": "Cultural Night",
+    "date": "May 5, 2026",
+    "description": "Celebrating talent and memories.",
+    "image": "/images/event3.jpg"
+  }
+]

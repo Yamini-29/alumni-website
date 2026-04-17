@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Sandeep Jai",
+    "college": "IIT Madras",
+    "type": "IIT",
+    "lat": 13.0827,
+    "lng": 80.2707
+  },
+  {
+    "name": "Arjun",
+    "college": "NIT Trichy",
+    "type": "NIT",
+    "lat": 10.7905,
+    "lng": 78.7047
+  },
+  {
+    "name": "Sneha",
+    "college": "AIIMS Delhi",
+    "type": "AIIMS",
+    "lat": 28.5672,
+    "lng": 77.2100
+  },
+  {
+    "name": "Rahul",
+    "college": "JIPMER",
+    "type": "OTHER",
+    "lat": 11.9416,
+    "lng": 79.8083
+  }
+]

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: system-ui, sans-serif;
+}
+
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}
+
+.marker-cluster-small {
+  background-color: rgba(201, 162, 39, 0.6);
+}
+
+.marker-cluster div {
+  background-color: #C9A227;
+  color: white;
+}

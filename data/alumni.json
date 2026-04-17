@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Yamini Shree",
+    "batch": 2021,
+    "education": {
+      "school": "Thamarai International School",
+      "college": "IIT Tirupati",
+      "degree": "B.Tech",
+      "department": "Computer Science"
+    },
+    "current": {
+      "company": "Amazon",
+      "role": "Software Engineer",
+      "location": "Bangalore, India"
+    },
+    "contact": {
+      "linkedin": "https://linkedin.com",
+      "email": ""
+    },
+    "profileImage": "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    "name": "Arjun Kumar",
+    "batch": 2019,
+    "education": {
+      "school": "Thamarai International School",
+      "college": "NIT Trichy",
+      "degree": "B.Tech",
+      "department": "Mechanical"
+    },
+    "current": {
+      "company": "Amazon",
+      "role": "Product Manager",
+      "location": "Hyderabad, India"
+    },
+    "contact": {
+      "linkedin": "",
+      "email": ""
+    },
+    "profileImage": "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    "name": "Sneha Reddy",
+    "batch": 2020,
+    "education": {
+      "school": "Thamarai International School",
+      "college": "VIT Vellore",
+      "degree": "B.Tech",
+      "department": "ECE"
+    },
+    "current": {
+      "company": "Microsoft",
+      "role": "Software Engineer",
+      "location": "Hyderabad, India"
+    },
+    "contact": {
+      "linkedin": "",
+      "email": ""
+    },
+    "profileImage": "https://i.pravatar.cc/150?img=4"
+  },
+  {
+    "name": "Rahul Verma",
+    "batch": 2018,
+    "education": {
+      "school": "Thamarai International School",
+      "college": "Anna University",
+      "degree": "B.E",
+      "department": "Civil"
+    },
+    "current": {
+      "company": "L&T",
+      "role": "Civil Engineer",
+      "location": "Chennai, India"
+    },
+    "contact": {
+      "linkedin": "",
+      "email": ""
+    },
+    "profileImage": "https://i.pravatar.cc/150?img=4"
+  },
+  {
+    "name": "Priya Sharma",
+    "batch": 2022,
+    "education": {
+      "school": "Thamarai International School",
+      "college": "Delhi University",
+      "degree": "B.Sc",
+      "department": "Mathematics"
+    },
+    "current": {
+      "company": "",
+      "role": "Student",
+      "location": "Delhi, India"
+    },
+    "contact": {
+      "linkedin": "",
+      "email": ""
+    },
+    "profileImage": "https://i.pravatar.cc/150?img=5"
+  }
+]
