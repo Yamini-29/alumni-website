@@ -5,6 +5,8 @@ import EventCard from "@/components/EventCard";
 import events from "@/data/events.json";
 import MapWrapper from "@/components/MapWrapper";
 import LeadershipMessage from "@/components/LeadershipMessage";
+import Carousel from "@/components/LeadershipCarousel";
+import AlumniHighlights from "@/components/AlumniHighlights";
 
 export default function Home() {
   return (
@@ -14,9 +16,8 @@ export default function Home() {
       <section className="px-10 py-20">
 <MapWrapper /></section>
 
-<section>
-  <LeadershipMessage />
-</section>
+<Carousel />
+
 
       {/* <section className="px-10 py-20">
         <SectionTitle title="Upcoming Events" />
