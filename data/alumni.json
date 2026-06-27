@@ -8,7 +8,10 @@
     "company": "Microsoft",
     "city": "Chennai",
     "status": "Active",
-    "linkedin": "https://linkedin.com"
+    "linkedin": "https://linkedin.com",
+    "category": "JEE",
+    "phonenumber": 1234567890,
+    "employmentStatus":"Working"
   },
   {
     "id": 2,
@@ -19,6 +22,7 @@
     "company": "Amazon",
     "city": "Bangalore",
     "status": "Active",
+    "employmentStatus": "Working",
     "linkedin": "https://linkedin.com"
   },
   {
@@ -30,7 +34,10 @@
     "company": "Student",
     "city": "Delhi",
     "status": "Active",
-    "linkedin": "https://linkedin.com"
+    "employmentStatus": "Student",
+    "linkedin": "https://linkedin.com",
+    "category": "NEET",
+    "phonenumber": 9876543210
   },
   {
     "id": 4,
@@ -41,6 +48,7 @@
     "company": "TCS",
     "city": "Chennai",
     "status": "Active",
+    "employmentStatus": "Working",
     "linkedin": "https://linkedin.com"
   }
 ]

@@ -6,6 +6,10 @@ export interface Alumni {
   degree: string;
   company: string;
   city: string;
-  status: string;
   linkedin: string;
+  category: string;
+  phonenumber: number;
+  email: string;
+  status: "Active" | "Inactive";
+  employmentStatus: "Employed" | "Unemployed" | "Student";
 }

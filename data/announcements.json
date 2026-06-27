@@ -1,12 +1,35 @@
 [
   {
-    "date": "April 2026",
-    "title": "Alumni Meet 2026 Announced",
-    "description": "Join us for the annual alumni meet this summer."
+    "id": 1,
+    "title": "Alumni Reunion 2026",
+    "description": "Join us for the annual alumni reunion at the school campus.",
+    "category": "Event",
+    "publishDate": "2026-01-10",
+    "expiryDate": "2026-02-01",
+    "status": "Published",
+    "pinned": true,
+    "createdBy": "Admin"
   },
   {
-    "date": "March 2026",
-    "title": "New Alumni Portal Launch",
-    "description": "We are excited to launch our new alumni platform."
+    "id": 2,
+    "title": "Scholarship Applications Open",
+    "description": "Applications are now open for merit scholarships.",
+    "category": "Scholarship",
+    "publishDate": "2026-01-15",
+    "expiryDate": "2026-03-01",
+    "status": "Published",
+    "pinned": false,
+    "createdBy": "Principal"
+  },
+  {
+    "id": 3,
+    "title": "Campus Placement Drive",
+    "description": "Top companies will visit the campus next month.",
+    "category": "Career",
+    "publishDate": "2026-02-01",
+    "expiryDate": "2026-02-28",
+    "status": "Draft",
+    "pinned": false,
+    "createdBy": "Placement Cell"
   }
 ]

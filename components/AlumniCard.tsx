@@ -25,21 +25,21 @@ export default function AlumniCard({ alumni }: any) {
         {/* 🎓 College FIRST */}
         <div className="flex items-center gap-2 text-sm text-gray-700">
           <GraduationCap size={16} />
-          <span>{alumni.education.college}</span>
+          <span>{alumni.college}</span>
         </div>
 
         {/* 💼 Company */}
-        {alumni.current.company && (
+        {alumni.company && (
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Building2 size={16} />
-            <span>{alumni.current.company}</span>
+            <span>{alumni.company}</span>
           </div>
         )}
 
         {/* 📍 Location */}
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <MapPin size={16} />
-          <span>{alumni.current.location}</span>
+          <span>{alumni.city}</span>
         </div>
       </div>
     </div>
