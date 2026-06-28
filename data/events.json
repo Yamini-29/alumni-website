@@ -1,20 +1,86 @@
 [
   {
+    "id": 1,
     "title": "Annual Alumni Meet 2026",
-    "date": "March 15, 2026",
-    "description": "Join us for a grand reunion with fellow alumni.",
-    "image": "/images/event1.jpg"
+    "description": "Reconnect with fellow alumni, faculty and current students through networking sessions, cultural performances and campus tours.",
+    "category": "Alumni Meet",
+    "venue": "Thamarai International School Auditorium",
+    "date": "2026-08-15",
+    "time": "10:00 AM",
+    "registrationLink": "https://thamaraischool.edu/register/alumni-meet",
+    "banner": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
+    "status": "Upcoming",
+    "featured": true,
+    "createdBy": "Admin"
   },
   {
-    "title": "Tech Talk by Alumni",
-    "date": "April 10, 2026",
-    "description": "An interactive session with industry experts.",
-    "image": "/images/event2.jpg"
+    "id": 2,
+    "title": "Career Guidance Session",
+    "description": "Successful alumni share their professional journeys and provide career guidance to senior school students.",
+    "category": "Seminar",
+    "venue": "Conference Hall",
+    "date": "2026-07-28",
+    "time": "02:30 PM",
+    "registrationLink": "https://thamaraischool.edu/register/career-guidance",
+    "banner": "https://images.unsplash.com/photo-1515169067868-5387ec356754?w=1200",
+    "status": "Upcoming",
+    "featured": false,
+    "createdBy": "Admin"
   },
   {
-    "title": "Cultural Night",
-    "date": "May 5, 2026",
-    "description": "Celebrating talent and memories.",
-    "image": "/images/event3.jpg"
+    "id": 3,
+    "title": "Sports Reunion Cup",
+    "description": "Friendly football, cricket and volleyball matches between alumni batches and current students.",
+    "category": "Sports",
+    "venue": "School Sports Ground",
+    "date": "2026-06-20",
+    "time": "09:00 AM",
+    "registrationLink": "https://thamaraischool.edu/register/sports-reunion",
+    "banner": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=1200",
+    "status": "Completed",
+    "featured": true,
+    "createdBy": "Sports Coordinator"
+  },
+  {
+    "id": 4,
+    "title": "Entrepreneurship Summit",
+    "description": "Panel discussion with alumni founders and business leaders focusing on startups, innovation and leadership.",
+    "category": "Conference",
+    "venue": "Innovation Centre",
+    "date": "2026-09-05",
+    "time": "11:00 AM",
+    "registrationLink": "https://thamaraischool.edu/register/startup-summit",
+    "banner": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200",
+    "status": "Upcoming",
+    "featured": false,
+    "createdBy": "Admin"
+  },
+  {
+    "id": 5,
+    "title": "Batch of 2015 Reunion",
+    "description": "Celebrating ten years since graduation with memories, games, awards and dinner.",
+    "category": "Batch Reunion",
+    "venue": "School Banquet Hall",
+    "date": "2026-05-18",
+    "time": "06:00 PM",
+    "registrationLink": "https://thamaraischool.edu/register/batch2015",
+    "banner": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200",
+    "status": "Completed",
+    "featured": false,
+    "createdBy": "Admin"
+  },
+  {
+    "id": 6,
+    "title": "Alumni Cultural Night",
+    "description": "Music, dance, food stalls and entertainment hosted by alumni from different graduating batches.",
+    "category": "Cultural",
+    "venue": "Open Air Theatre",
+    "date": "2026-10-02",
+    "time": "05:30 PM",
+    "registrationLink": "https://thamaraischool.edu/register/cultural-night",
+    "banner": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
+    "status": "Upcoming",
+    "featured": true,
+    "createdBy": "Cultural Committee"
   }
 ]
