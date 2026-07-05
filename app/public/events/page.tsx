@@ -5,7 +5,7 @@ export default function Events() {
   const past = events.filter((e) => e.type === "past");
 
   return (
-    <div className="px-10 py-20">
+    <div className="py-24">
 
       <h1 className="text-4xl font-bold mb-10">
         Events & Reunions

@@ -21,7 +21,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
+    <section className="min-h-screen relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
 
       {/* Background Images */}
       {images.map((img, index) => (

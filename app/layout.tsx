@@ -10,11 +10,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* ✅ Apply font here */}
-      <body className={`${inter.className} bg-gray-50 text-gray-900`}>
-       <LayoutWrapper>
-  <main>{children}</main>
-</LayoutWrapper>
+      <body className={`${inter.className} bg-white text-gray-900`}>
+        <LayoutWrapper>
+          <main>{children}</main>
+        </LayoutWrapper>
       </body>
     </html>
   );

@@ -5,19 +5,19 @@ const cards = [
   {
     title: "Alumni Directory",
     desc: "Connect with alumni across batches",
-    link: "/directory",
+    link: "/public/directory",
     icon: <Users size={28} />,
   },
   {
     title: "Events & Reunions",
     desc: "Stay updated with upcoming events",
-    link: "/events",
+    link: "/public/events",
     icon: <CalendarDays size={28} />,
   },
   {
     title: "Announcements",
     desc: "Latest updates from the institution",
-    link: "/announcements",
+    link: "/public/announcements",
     icon: <Megaphone size={28} />,
   },
 ];

@@ -19,15 +19,15 @@ export default function Navbar() {
 
   const links = [
     { name: "Home", href: "/" },
-    { name: "Events", href: "/events" },
-    { name: "Directory", href: "/directory" },
-    { name: "Gallery", href: "/gallery" },
-    { name: "Announcements", href: "/announcements" },
+    { name: "Events", href: "/public/events" },
+    { name: "Directory", href: "/public/directory" },
+    { name: "Gallery", href: "/public/gallery" },
+    { name: "Announcements", href: "/public/announcements" },
   ];
 
   return (
     <nav
-      className={`fixed w-full z-50 px-10 py-4 flex justify-between items-center transition-all duration-300 ${
+      className={`fixed w-full z-[9999] px-10 py-4 flex justify-between items-center transition-all duration-300 ${
         scrolled
           ? "bg-[#0B1E3C] shadow-md"
           : "bg-transparent"

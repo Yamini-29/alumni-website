@@ -2,7 +2,7 @@ import announcements from "@/data/announcements.json";
 
 export default function Announcements() {
   return (
-    <div className="px-10 py-20">
+    <div className="py-24">
       <h1 className="text-4xl font-bold mb-10">
         Announcements
       </h1>

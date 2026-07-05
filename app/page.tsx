@@ -7,16 +7,24 @@ import MapWrapper from "@/components/public/MapWrapper";
 import LeadershipMessage from "@/components/public/LeadershipMessage";
 import Carousel from "@/components/public/LeadershipCarousel";
 import AlumniHighlights from "@/components/public/AlumniHighlights";
+import AboutSection from "@/components/public/AboutSection";
+import Container from "@/components/layout/Container";
+import LeaderMessages from "@/components/public/LeaderMessages";
 
 export default function Home() {
   return (
     <div>
       <Hero />
       <GlassCards />
-      <section className="px-10 py-20">
-<MapWrapper /></section>
 
-<Carousel />
+      <AboutSection />
+
+      <LeaderMessages />
+        <Container className="py-24">
+          <MapWrapper />
+        </Container>
+
+
 
 
       {/* <section className="px-10 py-20">
