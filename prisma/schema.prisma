@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+
+  username     String   @unique
+  passwordHash String
+
+  name         String
+
+  role         AdminRole @default(ADMIN)
+
+  isActive     Boolean @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions     Session[]
+
+  @@index([username])
+}
+
+model Session {
+  id         String   @id @default(cuid())
+
+  token      String   @unique
+
+  adminId    String
+  admin      Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  expiresAt  DateTime
+
+  lastUsedAt DateTime @default(now())
+
+  @@index([token])
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
