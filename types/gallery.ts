@@ -1,19 +1,15 @@
-export interface GalleryImage {
-  id: number;
+export interface GalleryPhoto {
+  id: string;
+  url: string;
+  uploadedDate: string; // ISO date string
+}
 
-  title: string;
-
-  category: string;
-
+export interface GalleryFolder {
+  id: string;
+  eventName: string;
+  eventDate: string;    // date the event actually happened
+  createdDate: string;  // date the folder was created in admin
   description: string;
-
-  image: string;
-
-  event: string;
-
-  uploadedBy: string;
-
-  uploadDate: string;
-
-  featured: boolean;
+  coverImage: string;   // explicit cover image, separate from photos[]
+  photos: GalleryPhoto[];
 }

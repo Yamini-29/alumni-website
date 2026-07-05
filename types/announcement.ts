@@ -14,4 +14,6 @@ export interface Announcement {
   pinned: boolean;
 
   status: "Draft" | "Published";
+
+  createdBy: string;
 }

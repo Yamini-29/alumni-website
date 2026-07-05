@@ -1,101 +1,37 @@
 [
   {
-    "id": 1,
-    "title": "Annual Alumni Meet 2026",
-    "category": "Alumni Meet",
-    "description": "Alumni interacting with faculty and students during the annual reunion.",
-    "image": "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
-    "event": "Annual Alumni Meet 2026",
-    "uploadedBy": "Admin",
-    "uploadDate": "2026-08-15",
-    "featured": true
+    "id": "farewell-2025",
+    "eventName": "Farewell 2025",
+    "eventDate": "2025-03-15",
+    "createdDate": "2025-03-16",
+    "description": "Farewell celebration for the graduating batch of 2025.",
+    "coverImage": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800",
+    "photos": [
+      {
+        "id": "p1",
+        "url": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800",
+        "uploadedDate": "2025-03-16"
+      },
+      {
+        "id": "p2",
+        "url": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800",
+        "uploadedDate": "2025-03-16"
+      }
+    ]
   },
   {
-    "id": 2,
-    "title": "Science Exhibition",
-    "category": "Academics",
-    "description": "Students presenting innovative science models during the annual exhibition.",
-    "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200",
-    "event": "Science Expo 2026",
-    "uploadedBy": "Science Department",
-    "uploadDate": "2026-07-20",
-    "featured": false
-  },
-  {
-    "id": 3,
-    "title": "Sports Championship",
-    "category": "Sports",
-    "description": "Championship football match between senior houses.",
-    "image": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=1200",
-    "event": "Annual Sports Day",
-    "uploadedBy": "Sports Department",
-    "uploadDate": "2026-06-18",
-    "featured": true
-  },
-  {
-    "id": 4,
-    "title": "Cultural Night",
-    "category": "Cultural",
-    "description": "Dance and music performances by students and alumni.",
-    "image": "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200",
-    "event": "Cultural Fest 2026",
-    "uploadedBy": "Cultural Committee",
-    "uploadDate": "2026-09-12",
-    "featured": false
-  },
-  {
-    "id": 5,
-    "title": "Graduation Ceremony",
-    "category": "Graduation",
-    "description": "Students receiving graduation certificates on stage.",
-    "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200",
-    "event": "Graduation Day 2026",
-    "uploadedBy": "Admin",
-    "uploadDate": "2026-05-30",
-    "featured": true
-  },
-  {
-    "id": 6,
-    "title": "Teachers' Day Celebration",
-    "category": "Celebration",
-    "description": "Students honoring teachers with performances and speeches.",
-    "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
-    "event": "Teachers' Day",
-    "uploadedBy": "Student Council",
-    "uploadDate": "2026-09-05",
-    "featured": false
-  },
-  {
-    "id": 7,
-    "title": "Batch of 2015 Reunion",
-    "category": "Alumni Meet",
-    "description": "Group photograph of the 2015 graduating batch reunion.",
-    "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200",
-    "event": "Batch Reunion 2015",
-    "uploadedBy": "Alumni Office",
-    "uploadDate": "2026-04-10",
-    "featured": true
-  },
-  {
-    "id": 8,
-    "title": "Independence Day Celebration",
-    "category": "National Event",
-    "description": "Flag hoisting ceremony followed by cultural performances.",
-    "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200",
-    "event": "Independence Day 2026",
-    "uploadedBy": "Admin",
-    "uploadDate": "2026-08-15",
-    "featured": false
-  },
-  {
-    "id": 9,
-    "title": "Art Exhibition",
-    "category": "Arts",
-    "description": "Student artwork displayed during the annual art exhibition.",
-    "image": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200",
-    "event": "Creative Arts Week",
-    "uploadedBy": "Arts Department",
-    "uploadDate": "2026-07-01",
-    "featured": false
+    "id": "sports-day-2024",
+    "eventName": "Sports Day 2024",
+    "eventDate": "2024-11-20",
+    "createdDate": "2024-11-21",
+    "description": "Annual inter-house sports meet.",
+    "coverImage": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800",
+    "photos": [
+      {
+        "id": "p3",
+        "url": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800",
+        "uploadedDate": "2024-11-21"
+      }
+    ]
   }
 ]

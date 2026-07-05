@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import alumni from "@/data/alumni.json";
-import AlumniCard from "@/components/AlumniCard";
-import DirectoryHero from "@/components/DirectoryHero";
+import AlumniCard from "@/components/public/AlumniCard";
+import DirectoryHero from "@/components/public/DirectoryHero";
 
 
 export default function Directory() {

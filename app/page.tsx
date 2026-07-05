@@ -1,12 +1,12 @@
-import Hero from "@/components/Hero";
-import GlassCards from "@/components/GlassCards";
-import SectionTitle from "@/components/SectionTitle";
-import EventCard from "@/components/EventCard";
+import Hero from "@/components/public/Hero";
+import GlassCards from "@/components/public/GlassCards";
+import SectionTitle from "@/components/public/SectionTitle";
+import EventCard from "@/components/public/EventCard";
 import events from "@/data/events.json";
-import MapWrapper from "@/components/MapWrapper";
-import LeadershipMessage from "@/components/LeadershipMessage";
-import Carousel from "@/components/LeadershipCarousel";
-import AlumniHighlights from "@/components/AlumniHighlights";
+import MapWrapper from "@/components/public/MapWrapper";
+import LeadershipMessage from "@/components/public/LeadershipMessage";
+import Carousel from "@/components/public/LeadershipCarousel";
+import AlumniHighlights from "@/components/public/AlumniHighlights";
 
 export default function Home() {
   return (
