@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { Alumni } from "@/types/alumni";
 
+
 interface Props {
   alumni: Alumni[];
   setAlumni: React.Dispatch<React.SetStateAction<Alumni[]>>;
   closeModal: () => void;
+
+  onSuccess: () => Promise<void>;
 
   mode: "add" | "edit";
 
@@ -17,9 +20,10 @@ export default function AlumniModal({
   alumni,
   setAlumni,
   closeModal,
+  onSuccess,
   mode,
   selectedAlumni,
-}: Props) {
+}: Props)  {
   const [name, setName] = useState(
     selectedAlumni?.name || ""
   );
@@ -44,7 +48,7 @@ export default function AlumniModal({
     selectedAlumni?.status || "Active"
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       !name ||
       !batch ||
@@ -56,39 +60,55 @@ export default function AlumniModal({
       return;
     }
 
-    if (mode === "add") {
-      const newAlumni: Alumni = {
-        id: Date.now(),
-        name,
-        batch,
-        college,
-        company,
-        city,
-        status,
-      };
-
-      setAlumni([...alumni, newAlumni]);
-    } else {
-      const updatedAlumni = alumni.map((item) => {
-        if (item.id === selectedAlumni?.id) {
-          return {
-            ...item,
+    try {
+      if (mode === "add") {
+        const response = await fetch("/api/admin/alumni", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             name,
             batch,
             college,
             company,
             city,
             status,
-          };
+          }),
+        });
+
+        if (!response.ok) {
+          alert("Unable to save alumni");
+          return;
         }
+      } else {
+        const response = await fetch(`/api/admin/alumni/${selectedAlumni?.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            batch,
+            college,
+            company,
+            city,
+            status,
+          }),
+        });
 
-        return item;
-      });
+        if (!response.ok) {
+          alert("Unable to update alumni");
+          return;
+        }
+      }
 
-      setAlumni(updatedAlumni);
+      await onSuccess();
+      closeModal();
+    } catch (error) {
+      console.error("Error saving alumni:", error);
+      alert("An error occurred while saving alumni");
     }
-
-    closeModal();
   };
 
   return (
@@ -189,4 +209,4 @@ export default function AlumniModal({
 
     </div>
   );
-}
+  }

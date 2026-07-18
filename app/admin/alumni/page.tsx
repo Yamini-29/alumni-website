@@ -1,7 +1,5 @@
 "use client";
-
-import { useState } from "react";
-import alumniData from "@/data/alumni.json";
+import { useState, useEffect } from "react";
 import { Alumni } from "@/types/alumni";
 import AlumniModal from "@/components/admin/AlumniModal";
 import DeleteAlumniModal from "@/components/admin/DeleteAlumniModal";
@@ -13,9 +11,27 @@ import AlumniFilters from "@/components/admin/AlumniFilters";
 import AlumniStats from "@/components/admin/AlumniStats";
 import AlumniTable from "@/components/admin/AlumniTable";
 export default function AlumniPage() {
- 
 
-  const [alumni, setAlumni] = useState(alumniData);
+  async function fetchAlumni() {
+  try {
+    const response = await fetch("/api/admin/alumni");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch alumni");
+    }
+
+    const data = await response.json();
+
+    setAlumni(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+useEffect(() => {
+  fetchAlumni();
+}, []);
+
+  const [alumni, setAlumni] = useState<Alumni[]>([]);
   const [search, setSearch] = useState("");
   const [batchFilter, setBatchFilter] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -28,6 +44,7 @@ export default function AlumniPage() {
   const [showDrawer, setShowDrawer] = useState(false);
   
   const [showImportModal, setShowImportModal] = useState(false);
+
 
 const filteredAlumni = alumni.filter((person) => {
   const matchesSearch =
@@ -162,17 +179,13 @@ const filteredAlumni = alumni.filter((person) => {
 
       {showModal && (
         <AlumniModal
-          alumni={alumni}
-          setAlumni={setAlumni}
-          closeModal={() => setShowModal(false)}
-          mode={
-            selectedAlumni
-              ? "edit"
-              : "add"
-              
-          }
-          selectedAlumni={selectedAlumni}
-        />
+  alumni={alumni}
+  setAlumni={setAlumni}
+  closeModal={() => setShowModal(false)}
+  onSuccess={fetchAlumni}
+  mode={selectedAlumni ? "edit" : "add"}
+  selectedAlumni={selectedAlumni}
+/>
       )}
       {showDeleteModal && (
   <DeleteAlumniModal

@@ -48,3 +48,21 @@ enum AdminRole {
   SUPER_ADMIN
   ADMIN
 }
+
+model Alumni {
+  id         String        @id @default(cuid())
+  name       String
+  batch      String
+  college    String
+  company    String
+  city       String
+  status     AlumniStatus  @default(ACTIVE)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+enum AlumniStatus {
+  ACTIVE
+  HIDDEN
+}
