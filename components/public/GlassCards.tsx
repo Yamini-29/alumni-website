@@ -24,7 +24,7 @@ const cards = [
 
 export default function GlassCards() {
   return (
-    <div className="relative -mt-24 px-10 z-20">
+    <div className="relative -mt-52 px-10 z-20">
       <div className="grid md:grid-cols-3 gap-8">
         {cards.map((card, i) => (
           <Link href={card.link} key={i}>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import GlassCards from "./GlassCards";
 
 const images = [
   "/images/school1.jpg",
@@ -21,7 +22,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen relative h-[90vh] flex items-center justify-center text-center text-white overflow-hidden">
+    <section className="relative h-screen overflow-hidden text-white items-center justify-center flex text-center">
 
       {/* Background Images */}
       {images.map((img, index) => (
@@ -42,7 +43,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="relative z-10 max-w-3xl px-6"
+        className="relative z-10 mx-auto flex h-full max-w-3xl flex-col items-center justify-center px-6 pb-28 text-center"
       >
         {/* 🔥 IMPROVED TITLE */}
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
@@ -89,6 +90,8 @@ A Legacy That Lives Beyond Classrooms,Reconnect with your roots, celebrate achie
       <div className="absolute bottom-10 right-10 text-white animate-bounce text-xl">
         ↓
       </div>
+
+      
     </section>
   );
 }

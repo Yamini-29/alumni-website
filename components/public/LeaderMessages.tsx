@@ -69,7 +69,7 @@ useEffect(() => {
 }, []);
 
   return (
-    <section className="relative overflow-hidden bg-white py-36">
+    <section className="relative overflow-hidden bg-white py-16">
         <div
         className="
         absolute
@@ -115,7 +115,7 @@ useEffect(() => {
         {/* Carousel */}
 
         <div
-        className="relative mt-24"
+        className="relative mt-10"
         onMouseEnter={stopAutoPlay}
         onMouseLeave={startAutoPlay}
         >
@@ -302,7 +302,7 @@ useEffect(() => {
 
           {/* Navigation */}
 
-          <div className="mt-16 flex items-center justify-center gap-6">
+          <div className="mt-0 flex items-center justify-center gap-6">
 
             <button
             onClick={() => {
