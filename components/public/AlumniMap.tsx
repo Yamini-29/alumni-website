@@ -58,11 +58,37 @@ function Legend({
 
 export default function AlumniMap() {
   return (
-    <section className="bg-white py-28">
-    <div className="overflow-hidden rounded-[36px] border border-slate-200 bg-white shadow-[0_35px_80px_rgba(15,23,42,.08)]">
+    <section className="relative overflow-hidden py-20 bg-white ">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
 
-      <div className="border-b border-slate-200 px-10 py-8">
+    <div
+        className="
+        absolute
+        -left-40
+        top-20
+        h-[420px]
+        w-[420px]
+        rounded-full
+        bg-[#183B7A]/5
+        blur-[120px]
+        "
+    />
 
+    <div
+        className="
+        absolute
+        -right-32
+        bottom-0
+        h-[380px]
+        w-[380px]
+        rounded-full
+        bg-[#D8A11C]/8
+        blur-[120px]
+        "
+    />
+
+</div>  
+<div className="relative z-10 text-center max-w-4xl mx-auto">
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D8A11C]">
           Alumni Network
         </p>
@@ -71,19 +97,20 @@ export default function AlumniMap() {
           Explore Our Alumni Presence
         </h2>
 
-        <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+        <p className="mt-4 max-w-5xl text-lg leading-8 text-slate-600">
           Our alumni continue to pursue excellence across India's premier
           institutions, strengthening a nationwide network of learning,
           leadership and lifelong connections.
         </p>
-
       </div>
+    <div className="overflow-hidden rounded-[36px] border border-slate-200 mt-10 bg-white shadow-[0_24px_60px_rgba(24,59,122,.10)]">
+
 
       {/* 🔥 MAIN FLEX */}
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="relative">
 
         {/* 🗺️ MAP */}
-        <div className="relative flex-1 h-[620px] overflow-hidden">
+        <div className="relative flex-1 h-[700px] overflow-hidden">
           <MapContainer
             center={[22.9734, 78.6569]}
             zoom={5}
@@ -128,6 +155,7 @@ export default function AlumniMap() {
               </CircleMarker>
             ))}
           </MapContainer>
+          <div className="relative z-10">
           {/* Floating Legend */}
 
             <div
@@ -163,6 +191,7 @@ export default function AlumniMap() {
               </div>
 
             </div>
+            </div>
         </div>
 
         {/* 📌 LEGEND (NOW CORRECT POSITION) */}
@@ -171,5 +200,6 @@ export default function AlumniMap() {
       </div>
     </div>
     </section>
+    
   );
 }

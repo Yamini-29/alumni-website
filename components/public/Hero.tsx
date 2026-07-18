@@ -22,21 +22,21 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen overflow-hidden text-white items-center justify-center flex text-center">
+    <section className="hero-section relative h-screen overflow-hidden text-white items-center justify-center flex text-center">
 
       {/* Background Images */}
       {images.map((img, index) => (
         <img
           key={index}
           src={img}
-          className={`absolute w-full h-full object-cover transition-all duration-1000 ${
+          className={` hero-bg absolute w-full h-full object-cover transition-all duration-1000 ${
             index === current ? "opacity-100 scale-105" : "opacity-0"
           }`}
         />
       ))}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
+      <div className="hero-overlay absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80"></div>
 
       {/* Content */}
       <motion.div

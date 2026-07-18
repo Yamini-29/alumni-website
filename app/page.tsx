@@ -20,7 +20,7 @@ export default function Home() {
       <AboutSection />
 
       <LeaderMessages />
-        <Container className="py-24">
+        <Container >
           <MapWrapper />
         </Container>
 

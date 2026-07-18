@@ -7,7 +7,7 @@ import Item from "../motion/Item";
 
     export default function AboutSection() {
     return (
-        <section className=" pt-32 pb-20">
+        <section className="about-section pt-32 pb-20">
         <Container>
 
             {/* Heading */}
