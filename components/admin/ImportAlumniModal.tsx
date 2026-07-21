@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import * as XLSX from "xlsx";
+import Papa from "papaparse";
 
 interface Props {
   closeModal: () => void;
   setAlumni: React.Dispatch<React.SetStateAction<any[]>>;
+  onSuccess: () => Promise<void>;
 }
 
 export default function ImportAlumniModal({
   closeModal,
   setAlumni,
+  onSuccess,
 }: Props) {
   const [fileName, setFileName] = useState("");
   const [previewData, setPreviewData] = useState<any[]>([]);
@@ -42,12 +45,28 @@ const handleFileUpload = (
 
       complete: (results) => {
 
-        setPreviewData(
-          results.data as any[]
-        );
+  const normalizedData = (results.data as any[]).map((row) => ({
+    name: row.Name ?? row.name ?? row.NAME ?? "",
+    batch: String(row.Batch ?? row.batch ?? row.BATCH ?? ""),
+    college: row.College ?? row.college ?? row.COLLEGE ?? "",
+    company: row.Company ?? row.company ?? row.COMPANY ?? "",
+    city: row.City ?? row.city ?? row.CITY ?? "",
+    category: row.Category ?? row.category ?? row.CATEGORY ?? "",
+    phone: row.Phone ?? row.phone ?? row.PHONE ?? "",
+    email: row.Email ?? row.email ?? row.EMAIL ?? "",
+    status:
+      (
+        row.Status ??
+        row.status ??
+        row.STATUS ??
+        "ACTIVE"
+      ).toUpperCase(),
+  }));
 
-        setLoading(false);
-      },
+  setPreviewData(normalizedData);
+
+  setLoading(false);
+},
 
       error: (error) => {
 
@@ -87,10 +106,27 @@ const handleFileUpload = (
       const sheet =
         workbook.Sheets[sheetName];
 
-      const jsonData =
-        XLSX.utils.sheet_to_json(sheet);
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-      setPreviewData(jsonData);
+const normalizedData = (jsonData as any[]).map((row) => ({
+  name: row.Name ?? row.name ?? row.NAME ?? "",
+  batch: String(row.Batch ?? row.batch ?? row.BATCH ?? ""),
+  college: row.College ?? row.college ?? row.COLLEGE ?? "",
+  company: row.Company ?? row.company ?? row.COMPANY ?? "",
+  city: row.City ?? row.city ?? row.CITY ?? "",
+  category: row.Category ?? row.category ?? row.CATEGORY ?? "",
+  phone: row.Phone ?? row.phone ?? row.PHONE ?? "",
+  email: row.Email ?? row.email ?? row.EMAIL ?? "",
+  status:
+    (
+      row.Status ??
+      row.status ??
+      row.STATUS ??
+      "ACTIVE"
+    ).toUpperCase(),
+}));
+
+setPreviewData(normalizedData);
 
     } catch (error) {
 
@@ -107,7 +143,7 @@ const handleFileUpload = (
   reader.readAsBinaryString(file);
 };
 
-  const handleImport = () => {
+  const handleImport = async () => {
     if (previewData.length === 0) {
       alert("No data found");
       return;
@@ -178,16 +214,41 @@ const handleFileUpload = (
       })
     );
 
-    setAlumni((prev) => [
-      ...prev,
-      ...formattedData,
-    ]);
+    const response = await fetch(
+  "/api/admin/alumni/import",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      alumni: formattedData.map((item) => ({
+        name: item.name,
+        batch: item.batch,
+        college: item.college,
+        company: item.company,
+        city: item.city,
+        status:
+          item.status.toUpperCase() === "HIDDEN"
+            ? "HIDDEN"
+            : "ACTIVE",
+      })),
+    }),
+  }
+);
 
-    alert(
-      `${formattedData.length} alumni imported successfully`
-    );
+if (!response.ok) {
+  alert("Import failed");
+  return;
+}
 
-    closeModal();
+alert(`${formattedData.length} alumni imported successfully`);
+
+await onSuccess();
+
+closeModal();
+
+  
   };
 
   return (
@@ -376,19 +437,19 @@ CSV (.csv)
                         >
 
                           <td className="p-3 text-gray-700">
-                            {row.Name}
+                            {row.name}
                           </td>
 
                           <td className="p-3 text-gray-700">
-                            {row.Batch}
+                            {row.batch}
                           </td>
 
                           <td className="p-3 text-gray-700">
-                            {row.College}
+                            {row.college}
                           </td>
 
                           <td className="p-3 text-gray-700">
-                            {row.Company}
+                            {row.company}
                           </td>
 
                         </tr>

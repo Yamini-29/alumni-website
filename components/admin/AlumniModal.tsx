@@ -8,11 +8,8 @@ interface Props {
   alumni: Alumni[];
   setAlumni: React.Dispatch<React.SetStateAction<Alumni[]>>;
   closeModal: () => void;
-
   onSuccess: () => Promise<void>;
-
   mode: "add" | "edit";
-
   selectedAlumni?: Alumni | null;
 }
 

@@ -192,6 +192,7 @@ const filteredAlumni = alumni.filter((person) => {
     alumni={alumni}
     setAlumni={setAlumni}
     selectedAlumni={selectedAlumni}
+    onSuccess={fetchAlumni}
     closeModal={() =>
       setShowDeleteModal(false)
     }
@@ -219,10 +220,11 @@ const filteredAlumni = alumni.filter((person) => {
 showImportModal && (
 
 <ImportAlumniModal
-closeModal={() =>
-setShowImportModal(false)
-}
-setAlumni={setAlumni}
+  closeModal={() =>
+    setShowImportModal(false)
+  }
+  setAlumni={setAlumni}
+  onSuccess={fetchAlumni}
 />
 
 )

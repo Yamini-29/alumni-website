@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
-import eventsData from "@/data/events.json";
 import { Event } from "@/types/event";
 
 import EventModal from "@/components/admin/events/EventModal";
@@ -10,10 +9,23 @@ import EventDrawer from "@/components/admin/events/EventDrawer";
 import DeleteEventModal from "@/components/admin/events/DeleteEventModal";
 
 export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>(eventsData);
-
+  const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
+  async function fetchEvents() {
 
+  const response =
+    await fetch("/api/admin/events");
+
+  const data =
+    await response.json();
+
+  setEvents(data);
+
+}
+
+useEffect(() => {
+  fetchEvents();
+}, []);
   const [showModal, setShowModal] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -309,6 +321,7 @@ export default function EventsPage() {
           setEvents={setEvents}
           selectedEvent={selectedEvent}
           mode={selectedEvent ? "edit" : "add"}
+          onSuccess={fetchEvents}
           closeModal={() => {
             setShowModal(false);
             setSelectedEvent(null);
@@ -327,15 +340,14 @@ export default function EventsPage() {
       )}
 
       {showDeleteModal && selectedEvent && (
-        <DeleteEventModal
-          events={events}
-          setEvents={setEvents}
-          selectedEvent={selectedEvent}
-          closeModal={() => {
-            setShowDeleteModal(false);
-            setSelectedEvent(null);
-          }}
-        />
+       <DeleteEventModal
+  selectedEvent={selectedEvent}
+  onSuccess={fetchEvents}
+  closeModal={() => {
+    setShowDeleteModal(false);
+    setSelectedEvent(null);
+  }}
+/>
       )}
     </div>
   );

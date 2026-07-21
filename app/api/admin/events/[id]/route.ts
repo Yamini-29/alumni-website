@@ -3,7 +3,7 @@ import {
   NextResponse,
 } from "next/server";
 
-import { AlumniService } from "@/services/alumni.service";
+import { EventService } from "@/services/event.service";
 
 export async function PUT(
   request: NextRequest,
@@ -19,13 +19,13 @@ export async function PUT(
   const { id } =
     await params;
 
-  const alumni =
-    await AlumniService.updateAlumni(
+  const event =
+    await EventService.updateEvent(
       id,
       body
     );
 
-  return NextResponse.json(alumni);
+  return NextResponse.json(event);
 }
 
 export async function DELETE(
@@ -39,7 +39,7 @@ export async function DELETE(
   const { id } =
     await params;
 
-  await AlumniService.deleteAlumni(id);
+  await EventService.deleteEvent(id);
 
   return NextResponse.json({
     success: true,

@@ -26,5 +26,46 @@ export class AlumniService {
     });
 
   }
+  static async importAlumni(alumni: {
+  name: string;
+  batch: string;
+  college: string;
+  company: string;
+  city: string;
+  status: "ACTIVE" | "HIDDEN";
+}[]) {
+
+  return prisma.alumni.createMany({
+    data: alumni,
+  });
+
+}
+
+static async updateAlumni(
+  id: string,
+  data: {
+    name?: string;
+    batch?: string;
+    college?: string;
+    company?: string;
+    city?: string;
+    status?: "ACTIVE" | "HIDDEN";
+  }
+) {
+
+  return prisma.alumni.update({
+    where: { id },
+    data,
+  });
+
+}
+
+static async deleteAlumni(id: string) {
+
+  return prisma.alumni.delete({
+    where: { id },
+  });
+
+}
 
 }

@@ -7,9 +7,8 @@ interface Props {
   events: Event[];
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
   closeModal: () => void;
-
+  onSuccess: () => Promise<void>;
   mode: "add" | "edit";
-
   selectedEvent?: Event | null;
 }
 
@@ -17,12 +16,14 @@ export default function EventModal({
   events,
   setEvents,
   closeModal,
+  onSuccess,
   mode,
   selectedEvent,
 }: Props) {
   const [title, setTitle] = useState(
     selectedEvent?.title || ""
   );
+
 
   const [description, setDescription] = useState(
     selectedEvent?.description || ""
@@ -52,15 +53,16 @@ export default function EventModal({
     selectedEvent?.banner || ""
   );
 
-  const [status, setStatus] = useState<Event["status"]>(
-    selectedEvent?.status || "Upcoming"
-  );
+  const [status, setStatus] = useState(
+  selectedEvent?.status || "UPCOMING"
+);
 
   const [featured, setFeatured] = useState(
     selectedEvent?.featured || false
   );
+  
+  const handleSubmit = async () => {
 
-  const handleSubmit = () => {
     if (
       !title ||
       !description ||
@@ -73,46 +75,61 @@ export default function EventModal({
       return;
     }
 
-    if (mode === "add") {
-      const newEvent: Event = {
-        id: Date.now(),
-        title,
-        description,
-        venue,
-        category,
-        date,
-        time,
-        registrationLink,
-        banner,
-        status,
-        featured,
-        createdBy: "Admin",
-      };
+    try {
+      if (mode === "add") {
+        const response = await fetch("/api/admin/events", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              title,
+              description,
+              category,
+              venue,
+              date,
+              time,
+              banner,
+              featured,
+              status,
+            }),
+        });
 
-      setEvents([...events, newEvent]);
-    } else {
-      setEvents(
-        events.map((event) =>
-          event.id === selectedEvent?.id
-            ? {
-                ...event,
-                title,
-                description,
-                venue,
-                category,
-                date,
-                time,
-                registrationLink,
-                banner,
-                status,
-                featured,
-              }
-            : event
-        )
-      );
+        if (!response.ok) {
+          alert("Failed to create event");
+          return;
+        }
+      } else {
+        const response = await fetch(`/api/admin/events/${selectedEvent?.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            category,
+            venue,
+            date,
+            time,
+            banner,
+            featured,
+            status,
+          }),
+        });
+
+        if (!response.ok) {
+          alert("Failed to update event");
+          return;
+        }
+      }
+
+      await onSuccess();
+      closeModal();
+    } catch (error) {
+      console.error("Error saving event:", error);
+      alert("An error occurred while saving the event");
     }
-
-    closeModal();
   };
 
   return (
@@ -233,12 +250,12 @@ export default function EventModal({
               </label>
               <select
                 value={status}
-                onChange={(e) => setStatus(e.target.value as Event["status"])}
+                onChange={(e) => setStatus(e.target.value)}
                 className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 outline-none focus:border-[#303F9F]"
               >
-                <option value="Upcoming">Upcoming</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
+                <option value="UPCOMING">Upcoming</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
               </select>
             </div>
 

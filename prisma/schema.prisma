@@ -66,3 +66,33 @@ enum AlumniStatus {
   ACTIVE
   HIDDEN
 }
+
+model Event {
+
+  id          String @id @default(cuid())
+
+  title       String
+  description String
+
+  category    String
+
+  venue       String
+
+  date        String
+  time        String
+
+  banner      String
+
+  featured    Boolean @default(false)
+
+  status      EventStatus @default(UPCOMING)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum EventStatus {
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}

@@ -5,10 +5,9 @@ import { Alumni } from "@/types/alumni";
 interface Props {
   alumni: Alumni[];
   setAlumni: React.Dispatch<React.SetStateAction<Alumni[]>>;
-
   selectedAlumni: Alumni | null;
-
   closeModal: () => void;
+  onSuccess: () => Promise<void>;
 }
 
 export default function DeleteAlumniModal({
@@ -16,15 +15,31 @@ export default function DeleteAlumniModal({
   setAlumni,
   selectedAlumni,
   closeModal,
+  onSuccess,
 }: Props) {
-  const handleDelete = () => {
-    const updatedAlumni = alumni.filter(
-      (item) => item.id !== selectedAlumni?.id
-    );
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `/api/admin/alumni/${selectedAlumni?.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    setAlumni(updatedAlumni);
+      if (!response.ok) {
+        alert("Failed to delete alumni");
+        return;
+      }
 
-    closeModal();
+      await onSuccess();
+      closeModal();
+    } catch (error) {
+      console.error("Error deleting alumni:", error);
+      alert("An error occurred while deleting the alumni");
+    }
   };
 
   return (

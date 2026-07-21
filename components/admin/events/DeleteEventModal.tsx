@@ -3,26 +3,29 @@
 import { Event } from "@/types/event";
 
 interface Props {
-  events: Event[];
-  setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
-
   selectedEvent: Event | null;
-
   closeModal: () => void;
+
+  onSuccess: () => Promise<void>;
+
 }
 
 export default function DeleteEventModal({
-  events,
-  setEvents,
   selectedEvent,
   closeModal,
+  onSuccess
 }: Props) {
-  const handleDelete = () => {
-    const updatedEvents = events.filter(
-      (item) => item.id !== selectedEvent?.id
-    );
+  const handleDelete = async () => {
+    
 
-    setEvents(updatedEvents);
+    await fetch(
+`/api/admin/events/${selectedEvent.id}`,
+{
+    method:"DELETE",
+});
+
+await onSuccess();
+
 
     closeModal();
   };
