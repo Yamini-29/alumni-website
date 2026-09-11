@@ -5,26 +5,26 @@ const cards = [
   {
     title: "Alumni Directory",
     desc: "Connect with alumni across batches",
-    link: "/directory",
+    link: "/public/directory",
     icon: <Users size={28} />,
   },
   {
     title: "Events & Reunions",
     desc: "Stay updated with upcoming events",
-    link: "/events",
+    link: "/public/events",
     icon: <CalendarDays size={28} />,
   },
   {
     title: "Announcements",
     desc: "Latest updates from the institution",
-    link: "/announcements",
+    link: "/public/announcements",
     icon: <Megaphone size={28} />,
   },
 ];
 
 export default function GlassCards() {
   return (
-    <div className="relative -mt-24 px-10 z-20">
+    <div className="relative -mt-52 px-10 z-20">
       <div className="grid md:grid-cols-3 gap-8">
         {cards.map((card, i) => (
           <Link href={card.link} key={i}>

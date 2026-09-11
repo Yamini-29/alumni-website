@@ -1,21 +1,114 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+:root {
+  /* =========================
+      Brand Palette
+  ========================== */
+
+  --primary: #183b7a;
+  --primary-hover: #274d96;
+  --accent: #d8a11c;
+
+  /* =========================
+      Surfaces
+  ========================== */
+
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f5f8fc;
+  --surface-muted: #eef3f9;
+
+  /* =========================
+      Typography
+  ========================== */
+
+  --foreground: #12233d;
+  --muted: #64748b;
+  --muted-light: #94a3b8;
+
+  /* =========================
+      Borders
+  ========================== */
+
+  --border: #e2e8f0;
+
+  /* =========================
+      Shadows
+  ========================== */
+
+  --shadow-soft: 0 10px 30px rgba(24, 59, 122, 0.08);
+  --shadow-medium: 0 20px 45px rgba(24, 59, 122, 0.12);
+  --shadow-large: 0 30px 70px rgba(15, 23, 42, 0.12);
+
+  /* =========================
+      Radius
+  ========================== */
+
+  --radius: 24px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  --font-sans: var(--font-geist-sans);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  font-family: system-ui, sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+
+  background: var(--background);
+  color: var(--foreground);
+
+  font-family: var(--font-geist-sans), sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* ---------- Leaflet ---------- */
 
 .leaflet-container {
-  height: 500px;
-  width: 100%;
+  z-index: 1 !important;
 }
 
-.marker-cluster-small {
-  background-color: rgba(201, 162, 39, 0.6);
+.leaflet-pane {
+  z-index: 2 !important;
 }
 
-.marker-cluster div {
-  background-color: #C9A227;
-  color: white;
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control {
+  z-index: 5 !important;
+}
+
+.leaflet-popup {
+  z-index: 20 !important;
 }

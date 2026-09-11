@@ -30,21 +30,41 @@ export class AuthService {
     return SessionService.createSession(admin.id);
   }
 
-  static async changePassword(
-    adminId: string,
-    newPassword: string
-  ) {
-    const hash = await bcrypt.hash(newPassword, 12);
+static async changePassword(
+  adminId: string,
+  currentPassword: string,
+  newPassword: string
+) {
+  const admin = await prisma.admin.findUnique({
+    where: {
+      id: adminId,
+    },
+  });
 
-    return prisma.admin.update({
-      where: {
-        id: adminId,
-      },
-      data: {
-        passwordHash: hash,
-      },
-    });
+  if (!admin) {
+    throw new Error("Admin not found");
   }
+
+  const validPassword = await bcrypt.compare(
+    currentPassword,
+    admin.passwordHash
+  );
+
+  if (!validPassword) {
+    throw new Error("Current password is incorrect");
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+
+  return prisma.admin.update({
+    where: {
+      id: adminId,
+    },
+    data: {
+      passwordHash,
+    },
+  });
+}
 
   static async findAdmin(adminId: string) {
     return prisma.admin.findUnique({
