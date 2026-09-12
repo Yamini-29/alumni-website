@@ -1,12 +1,10 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { getCurrentAdmin } from "@/lib/auth";
 
 export async function GET() {
-  const cookieStore = await cookies();
+  const admin = await getCurrentAdmin();
 
-  const session = cookieStore.get("admin_session");
-
-  if (!session) {
+  if (!admin) {
     return NextResponse.json(
       { authenticated: false },
       { status: 401 }
@@ -15,5 +13,11 @@ export async function GET() {
 
   return NextResponse.json({
     authenticated: true,
+    admin: {
+      username: admin.username,
+      name: admin.name,
+      role: admin.role,
+      lastLogin: admin.updatedAt,
+    },
   });
 }

@@ -1,9 +1,73 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, User, Lock, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
     const router = useRouter();
+    const [admin, setAdmin] = useState<{
+        username: string;
+        name: string;
+        role: string;
+        lastLogin: string;
+    } | null>(null);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+    useEffect(() => {
+      const fetchAdmin = async () => {
+        const response = await fetch("/api/auth/me");
+
+        if (!response.ok) {
+          router.replace("/login");
+          return;
+        }
+
+        const data = await response.json();
+        setAdmin(data.admin);
+      };
+
+      fetchAdmin();
+    }, [router]);
+
+    const handlePasswordUpdate = async () => {
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        alert("Please fill all password fields");
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        alert("New passwords do not match");
+        return;
+      }
+
+      setIsUpdatingPassword(true);
+
+      try {
+        const response = await fetch("/api/auth/change-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ currentPassword, newPassword }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.message || "Password update failed");
+          return;
+        }
+
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        alert("Password updated successfully");
+      } finally {
+        setIsUpdatingPassword(false);
+      }
+    };
+
     const handleLogout = async () => {
     const response = await fetch("/api/auth/logout", {
         method: "POST",
@@ -14,7 +78,7 @@ export default function SettingsPage() {
         return;
     }
 
-    router.replace("/auth");
+    router.replace("/login");
     };
 
   return (
@@ -53,7 +117,7 @@ export default function SettingsPage() {
               </label>
 
               <div className="mt-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900">
-                admin
+                {admin?.username || "Loading..."}
               </div>
             </div>
 
@@ -63,7 +127,7 @@ export default function SettingsPage() {
               </label>
 
               <div className="mt-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900">
-                Super Admin
+                {admin?.role || "Loading..."}
               </div>
             </div>
 
@@ -93,6 +157,8 @@ export default function SettingsPage() {
               <input
                 type="password"
                 placeholder="Enter current password"
+                value={currentPassword}
+                onChange={(event) => setCurrentPassword(event.target.value)}
                 className="w-full rounded-xl border border-gray-300 p-3 text-gray-900 outline-none focus:border-[#303F9F]"
               />
             </div>
@@ -105,6 +171,8 @@ export default function SettingsPage() {
               <input
                 type="password"
                 placeholder="Enter new password"
+                value={newPassword}
+                onChange={(event) => setNewPassword(event.target.value)}
                 className="w-full rounded-xl border border-gray-300 p-3 text-gray-900 outline-none focus:border-[#303F9F]"
               />
             </div>
@@ -117,11 +185,15 @@ export default function SettingsPage() {
               <input
                 type="password"
                 placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
                 className="w-full rounded-xl border border-gray-300 p-3 text-gray-900 outline-none focus:border-[#303F9F]"
               />
             </div>
 
             <button
+              onClick={handlePasswordUpdate}
+              disabled={isUpdatingPassword}
               className="
                 rounded-xl
                 bg-[#303F9F]
@@ -133,7 +205,7 @@ export default function SettingsPage() {
                 hover:bg-[#283593]
               "
             >
-              Update Password
+              {isUpdatingPassword ? "Updating..." : "Update Password"}
             </button>
 
           </div>
@@ -160,7 +232,7 @@ export default function SettingsPage() {
               </label>
 
               <div className="mt-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 font-medium text-green-700">
-                Active
+                {admin ? "Active" : "Loading..."}
               </div>
             </div>
 
@@ -170,7 +242,9 @@ export default function SettingsPage() {
               </label>
 
               <div className="mt-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900">
-                Today
+                {admin?.lastLogin
+                  ? new Date(admin.lastLogin).toLocaleString()
+                  : "Loading..."}
               </div>
             </div>
 
