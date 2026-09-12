@@ -146,3 +146,21 @@ model GalleryImage {
 
   createdAt DateTime @default(now())
 }
+
+model Leadership {
+  id          String   @id @default(cuid())
+
+  name        String
+  designation String
+
+  message     String   @db.Text
+
+  image       String
+
+  displayOrder Int     @default(0)
+
+  isVisible   Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
