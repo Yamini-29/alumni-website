@@ -96,46 +96,71 @@ enum EventStatus {
   COMPLETED
   CANCELLED
 }
-model Announcement {
-  id          String             @id @default(cuid())
-  title       String
-  description String
-  category    String
-  publishDate String
-  expiryDate  String
-  pinned      Boolean            @default(false)
-  status      AnnouncementStatus @default(DRAFT)
-  createdBy   String
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
 
-  @@index([status, publishDate])
+model Announcement {
+  id            String                 @id @default(cuid())
+
+  title         String
+  description   String
+
+  category      String
+
+  status        AnnouncementStatus     @default(DRAFT)
+
+  pinned        Boolean                @default(false)
+
+  publishDate   String
+
+  createdBy     String
+
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
 }
 
 enum AnnouncementStatus {
-  DRAFT
   PUBLISHED
+  DRAFT
 }
 
 model GalleryFolder {
-  id          String         @id @default(cuid())
+  id          String   @id @default(cuid())
+
   eventName   String
   eventDate   String
-  description String
-  coverImage  String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  photos      GalleryPhoto[]
 
-  @@index([eventDate])
+  coverImage  String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  images      GalleryImage[]
 }
 
-model GalleryPhoto {
-  id        String        @id @default(cuid())
-  url       String
-  createdAt DateTime      @default(now())
+model GalleryImage {
+  id        String   @id @default(cuid())
+
+  imageUrl  String
+
   folderId  String
   folder    GalleryFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
-  @@index([folderId])
+  createdAt DateTime @default(now())
+}
+
+model Leadership {
+  id          String   @id @default(cuid())
+
+  name        String
+  designation String
+
+  message     String   @db.Text
+
+  image       String
+
+  displayOrder Int     @default(0)
+
+  isVisible   Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
