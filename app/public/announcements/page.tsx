@@ -1,32 +1,5 @@
-import announcements from "@/data/announcements.json";
-
-export default function Announcements() {
-  return (
-    <div className="py-24">
-      <h1 className="text-4xl font-bold mb-10">
-        Announcements
-      </h1>
-
-      <div className="space-y-6">
-        {announcements.map((a, i) => (
-          <div
-            key={i}
-            className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition"
-          >
-            <p className="text-sm text-gray-400 mb-2">
-              {a.date}
-            </p>
-
-            <h2 className="text-xl font-semibold">
-              {a.title}
-            </h2>
-
-            <p className="text-gray-600 mt-2">
-              {a.description}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+"use client";
+import { useEffect, useState } from "react";
+import Pagination from "@/components/public/Pagination";
+type Announcement={id:string;title:string;description:string;category:string;publishDate:string;pinned:boolean};type Result={items:Announcement[];page:number;totalPages:number};
+export default function AnnouncementsPage(){const [result,setResult]=useState<Result>({items:[],page:1,totalPages:1});const [page,setPage]=useState(1);const [loading,setLoading]=useState(true);useEffect(()=>{setLoading(true);fetch("/api/public/announcements?page="+page).then(r=>r.json()).then(setResult).finally(()=>setLoading(false))},[page]);return <div className="min-h-screen bg-[#f5f7fb] pb-16 pt-20"><header className="bg-[#0B1E3C] px-6 py-16 text-white md:px-10"><div className="mx-auto max-w-4xl"><p className="text-sm font-bold uppercase tracking-[0.2em] text-[#C9A227]">Stay informed</p><h1 className="mt-3 text-4xl font-bold md:text-5xl">Announcements</h1></div></header><main className="mx-auto max-w-4xl px-6 py-12 md:px-10">{loading?<p className="text-slate-500">Loading announcements...</p>:result.items.length?<div className="space-y-5">{result.items.map(item=><article key={item.id} className="rounded-2xl bg-white p-6 shadow-sm"><div className="flex justify-between gap-4"><div><p className="text-sm font-semibold text-[#82690d]">{item.category}{item.pinned?" | Pinned":""}</p><h2 className="mt-3 text-2xl font-bold text-[#0B1E3C]">{item.title}</h2></div><time className="text-sm text-slate-400">{item.publishDate}</time></div><p className="mt-4 leading-7 text-slate-600">{item.description}</p></article>)}</div>:<div className="rounded-2xl bg-white p-12 text-center text-slate-500">No announcements have been published yet.</div>}<Pagination page={result.page} totalPages={result.totalPages} onPageChange={setPage}/></main></div>;}

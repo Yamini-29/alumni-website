@@ -1,35 +1,6 @@
-import events from "@/data/events.json";
-
-export default function Events() {
-  const upcoming = events.filter((e) => e.type === "upcoming");
-  const past = events.filter((e) => e.type === "past");
-
-  return (
-    <div className="py-24">
-
-      <h1 className="text-4xl font-bold mb-10">
-        Events & Reunions
-      </h1>
-
-      <h2 className="text-2xl font-semibold mb-6">Upcoming</h2>
-      <div className="grid md:grid-cols-3 gap-6 mb-12">
-        {upcoming.map((e, i) => (
-          <div key={i} className="bg-white p-5 rounded-xl shadow-md">
-            <h3 className="font-semibold">{e.title}</h3>
-            <p className="text-sm text-gray-500">{e.date}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="text-2xl font-semibold mb-6">Past Events</h2>
-      <div className="grid md:grid-cols-3 gap-6">
-        {past.map((e, i) => (
-          <div key={i} className="bg-gray-100 p-5 rounded-xl">
-            <h3>{e.title}</h3>
-          </div>
-        ))}
-      </div>
-
-    </div>
-  );
-}
+"use client";
+import { useEffect, useState } from "react";
+import Pagination from "@/components/public/Pagination";
+type Event={id:string;title:string;description:string;category:string;venue:string;date:string;time:string;banner:string;featured:boolean};type Result={items:Event[];page:number;totalPages:number};
+const Cards=({items}:{items:Event[]})=><div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">{items.map(event=><article key={event.id} className="overflow-hidden rounded-2xl bg-white shadow-sm"><img src={event.banner||"/images/school1.jpg"} alt="" className="h-48 w-full object-cover"/><div className="space-y-3 p-6"><span className="rounded-full bg-[#C9A227]/15 px-3 py-1 text-xs font-bold text-[#82690d]">{event.category}</span><h2 className="text-xl font-bold text-[#0B1E3C]">{event.title}</h2><p className="line-clamp-2 text-sm text-slate-600">{event.description}</p><p className="text-sm text-slate-500">{event.date} | {event.time}</p><p className="text-sm text-slate-500">{event.venue}</p></div></article>)}</div>;
+export default function EventsPage(){const [upcoming,setUpcoming]=useState<Result>({items:[],page:1,totalPages:1});const [past,setPast]=useState<Result>({items:[],page:1,totalPages:1});const [pastPage,setPastPage]=useState(1);useEffect(()=>{fetch("/api/public/events?section=upcoming").then(r=>r.json()).then(setUpcoming)},[]);useEffect(()=>{fetch("/api/public/events?section=past&page="+pastPage).then(r=>r.json()).then(setPast)},[pastPage]);return <div className="min-h-screen bg-[#f5f7fb] pb-16 pt-20"><header className="bg-[#0B1E3C] px-6 py-16 text-white md:px-10"><div className="mx-auto max-w-7xl"><p className="text-sm font-bold uppercase tracking-[0.2em] text-[#C9A227]">Community calendar</p><h1 className="mt-3 text-4xl font-bold md:text-5xl">Events and reunions</h1></div></header><main className="mx-auto max-w-7xl px-6 py-12 md:px-10"><h2 className="mb-6 text-2xl font-bold text-[#0B1E3C]">Upcoming</h2>{upcoming.items.length?<Cards items={upcoming.items}/>:<p className="text-slate-500">No upcoming events.</p>}<h2 className="mb-6 mt-14 text-2xl font-bold text-[#0B1E3C]">Past events</h2>{past.items.length?<Cards items={past.items}/>:<p className="text-slate-500">No past events.</p>}<Pagination page={past.page} totalPages={past.totalPages} onPageChange={setPastPage}/></main></div>;}
