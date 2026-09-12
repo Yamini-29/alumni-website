@@ -164,3 +164,27 @@ model Leadership {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model MapLocation {
+  id        String   @id @default(cuid())
+
+  name      String
+  college   String
+
+  type      CollegeType
+
+  city      String
+
+  latitude  Float
+  longitude Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CollegeType {
+  IIT
+  NIT
+  AIIMS
+  OTHER
+}
