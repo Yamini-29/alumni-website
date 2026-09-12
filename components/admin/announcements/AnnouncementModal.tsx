@@ -4,28 +4,24 @@ import { useState, useEffect } from "react";
 import { Announcement } from "@/types/announcement";
 
 interface Props {
-  announcements: Announcement[];
-  setAnnouncements: React.Dispatch<
-    React.SetStateAction<Announcement[]>
-  >;
   closeModal: () => void;
   mode: "add" | "edit";
   selectedAnnouncement?: Announcement | null;
+  onSuccess: () => Promise<void>;
 }
 
 export default function AnnouncementModal({
-  announcements,
-  setAnnouncements,
   closeModal,
   mode,
   selectedAnnouncement,
+  onSuccess,
 }: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("General");
   const [publishDate, setPublishDate] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
   const [pinned, setPinned] = useState(false);
+  const [status, setStatus] = useState<"PUBLISHED" | "DRAFT">("DRAFT");
 
   useEffect(() => {
     if (mode === "edit" && selectedAnnouncement) {
@@ -33,68 +29,62 @@ export default function AnnouncementModal({
       setDescription(selectedAnnouncement.description);
       setCategory(selectedAnnouncement.category);
       setPublishDate(selectedAnnouncement.publishDate);
-      setExpiryDate(selectedAnnouncement.expiryDate);
       setPinned(selectedAnnouncement.pinned);
+      setStatus(selectedAnnouncement.status);
     } else {
       setTitle("");
       setDescription("");
       setCategory("General");
       setPublishDate("");
-      setExpiryDate("");
       setPinned(false);
+      setStatus("DRAFT");
     }
   }, [mode, selectedAnnouncement]);
 
-  const handleSubmit = (
-    status: "Published" | "Draft"
-  ) => {
-    if (
-      !title ||
-      !description ||
-      !publishDate ||
-      !expiryDate
-    ) {
+  const handleSubmit = async () => {
+    if (!title || !description || !publishDate) {
       alert("Please fill all fields");
       return;
     }
 
     if (mode === "add") {
-      const newAnnouncement: Announcement = {
-        id: Date.now(),
-        title,
-        description,
-        category,
-        publishDate,
-        expiryDate,
-        pinned,
-        status,
-        createdBy: "Admin",
-      };
-
-      setAnnouncements([
-        ...announcements,
-        newAnnouncement,
-      ]);
+      await fetch("/api/admin/announcements", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          category,
+          status,
+          pinned,
+          publishDate,
+          createdBy: "Admin",
+        }),
+      });
     } else {
-      const updated = announcements.map((item) => {
-        if (item.id === selectedAnnouncement?.id) {
-          return {
-            ...item,
+      await fetch(
+        `/api/admin/announcements/${selectedAnnouncement?.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             title,
             description,
             category,
-            publishDate,
-            expiryDate,
-            pinned,
             status,
-          };
+            pinned,
+            publishDate,
+            createdBy: "Admin",
+          }),
         }
-
-        return item;
-      });
-
-      setAnnouncements(updated);
+      );
     }
+
+    await onSuccess();
 
     closeModal();
   };
@@ -167,14 +157,16 @@ export default function AnnouncementModal({
             className="border border-gray-300 rounded-lg p-3 text-gray-900"
           />
 
-          <input
-            type="date"
-            value={expiryDate}
+          <select
+            value={status}
             onChange={(e) =>
-              setExpiryDate(e.target.value)
+              setStatus(e.target.value as "PUBLISHED" | "DRAFT")
             }
             className="border border-gray-300 rounded-lg p-3 text-gray-900"
-          />
+          >
+            <option value="PUBLISHED">Published</option>
+            <option value="DRAFT">Draft</option>
+          </select>
 
           <div className="col-span-2">
 
@@ -217,7 +209,7 @@ export default function AnnouncementModal({
           </button>
 
           <button
-            onClick={() => handleSubmit("Draft")}
+            onClick={handleSubmit}
             className="
               px-5
               py-2
@@ -229,23 +221,7 @@ export default function AnnouncementModal({
               transition
             "
           >
-            Save Draft
-          </button>
-
-          <button
-            onClick={() => handleSubmit("Published")}
-            className="
-              px-5
-              py-2
-              rounded-lg
-              bg-[#303F9F]
-              hover:bg-[#283593]
-              text-white
-              font-semibold
-              transition
-            "
-          >
-            Publish Announcement
+            Save Announcement
           </button>
 
         </div>

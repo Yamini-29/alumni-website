@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
-import announcementData from "@/data/announcements.json";
+import { useState, useEffect } from "react";
 
 import { Announcement } from "@/types/announcement";
 
@@ -12,7 +10,7 @@ import DeleteAnnouncementModal from "@/components/admin/announcements/DeleteAnno
 
 export default function AnnouncementPage() {
   const [announcements, setAnnouncements] =
-    useState<Announcement[]>(announcementData);
+useState<Announcement[]>([]);
 
   const [search, setSearch] = useState("");
 
@@ -37,6 +35,21 @@ export default function AnnouncementPage() {
       announcement.createdBy.toLowerCase().includes(keyword)
     );
   });
+  async function fetchAnnouncements() {
+  const response = await fetch("/api/admin/announcements");
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch announcements");
+  }
+
+  const data = await response.json();
+
+  setAnnouncements(data);
+}
+
+useEffect(() => {
+  fetchAnnouncements();
+}, []);
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -141,12 +154,12 @@ export default function AnnouncementPage() {
 
                 <span
                   className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                    announcement.status === "Published"
+                    announcement.status === "PUBLISHED"
                       ? "bg-green-100 text-green-700"
                       : "bg-yellow-100 text-yellow-700"
                   }`}
                 >
-                  {announcement.status}
+                  {announcement.status === "PUBLISHED" ? "Published" : "Draft"}
                 </span>
 
                 <div className="flex gap-3">
@@ -203,14 +216,12 @@ export default function AnnouncementPage() {
       {/* Add/Edit Modal */}
 
       {showModal && (
-
-        <AnnouncementModal
-          announcements={announcements}
-          setAnnouncements={setAnnouncements}
-          closeModal={() => setShowModal(false)}
-          mode={mode}
-          selectedAnnouncement={selectedAnnouncement}
-        />
+<AnnouncementModal
+  mode={mode}
+  selectedAnnouncement={selectedAnnouncement}
+  onSuccess={fetchAnnouncements}
+  closeModal={() => setShowModal(false)}
+/>
 
       )}
 
@@ -230,9 +241,8 @@ export default function AnnouncementPage() {
       {showDelete && (
 
         <DeleteAnnouncementModal
-          announcements={announcements}
-          setAnnouncements={setAnnouncements}
           selectedAnnouncement={selectedAnnouncement}
+          onSuccess={fetchAnnouncements}
           closeModal={() => setShowDelete(false)}
         />
 

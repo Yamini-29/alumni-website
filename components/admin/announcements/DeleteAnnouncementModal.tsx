@@ -3,33 +3,32 @@
 import { Announcement } from "@/types/announcement";
 
 interface Props {
-  announcements: Announcement[];
-
-  setAnnouncements: React.Dispatch<
-    React.SetStateAction<Announcement[]>
-  >;
-
   selectedAnnouncement: Announcement | null;
-
+  onSuccess: () => Promise<void>;
   closeModal: () => void;
 }
 
 export default function DeleteAnnouncementModal({
-  announcements,
-  setAnnouncements,
   selectedAnnouncement,
+  onSuccess,
   closeModal,
 }: Props) {
   if (!selectedAnnouncement) return null;
 
-  const handleDelete = () => {
-    const updated = announcements.filter(
-      (announcement) =>
-        announcement.id !==
-        selectedAnnouncement.id
+  const handleDelete = async () => {
+    const response = await fetch(
+      `/api/admin/announcements/${selectedAnnouncement.id}`,
+      {
+        method: "DELETE",
+      }
     );
 
-    setAnnouncements(updated);
+    if (!response.ok) {
+      alert("Delete failed");
+      return;
+    }
+
+    await onSuccess();
 
     closeModal();
   };

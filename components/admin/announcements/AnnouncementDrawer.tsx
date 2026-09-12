@@ -48,12 +48,12 @@ export default function AnnouncementDrawer({
 
             <span
               className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                announcement.status === "Published"
+                announcement.status === "PUBLISHED"
                   ? "bg-green-100 text-green-700"
                   : "bg-yellow-100 text-yellow-700"
               }`}
             >
-              {announcement.status}
+              {announcement.status === "PUBLISHED" ? "Published" : "Draft"}
             </span>
 
             {announcement.pinned && (
@@ -133,27 +133,6 @@ export default function AnnouncementDrawer({
 
                 <p className="font-semibold text-gray-900">
                   {announcement.publishDate}
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="flex items-center gap-3">
-
-              <CalendarDays
-                className="text-[#C218D4]"
-                size={20}
-              />
-
-              <div>
-
-                <p className="text-gray-500 text-sm">
-                  Expiry Date
-                </p>
-
-                <p className="font-semibold text-gray-900">
-                  {announcement.expiryDate}
                 </p>
 
               </div>

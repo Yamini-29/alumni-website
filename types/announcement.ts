@@ -1,5 +1,5 @@
 export interface Announcement {
-  id: number;
+  id: string;
 
   title: string;
 
@@ -9,11 +9,9 @@ export interface Announcement {
 
   publishDate: string;
 
-  expiryDate: string;
-
   pinned: boolean;
 
-  status: "Draft" | "Published";
+  status: "DRAFT" | "PUBLISHED";
 
   createdBy: string;
 }

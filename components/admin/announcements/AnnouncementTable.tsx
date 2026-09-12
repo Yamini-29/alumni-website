@@ -88,16 +88,16 @@ export default function AnnouncementTable({
               h-fit
 
               ${
-                announcement.status === "Published"
+                announcement.status === "PUBLISHED"
                   ? "bg-green-100 text-green-700"
-                  : announcement.status === "Draft"
+                  : announcement.status === "DRAFT"
                   ? "bg-gray-100 text-gray-700"
                   : "bg-gray-300 text-gray-700"
               }
               `}
             >
 
-              {announcement.status}
+              {announcement.status === "PUBLISHED" ? "Published" : "Draft"}
 
             </span>
 

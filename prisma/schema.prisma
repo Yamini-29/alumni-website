@@ -96,3 +96,28 @@ enum EventStatus {
   COMPLETED
   CANCELLED
 }
+
+model Announcement {
+  id            String                 @id @default(cuid())
+
+  title         String
+  description   String
+
+  category      String
+
+  status        AnnouncementStatus     @default(DRAFT)
+
+  pinned        Boolean                @default(false)
+
+  publishDate   String
+
+  createdBy     String
+
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+}
+
+enum AnnouncementStatus {
+  PUBLISHED
+  DRAFT
+}

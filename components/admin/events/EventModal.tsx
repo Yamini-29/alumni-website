@@ -50,8 +50,10 @@ export default function EventModal({
   );
 
   const [banner, setBanner] = useState(
-    selectedEvent?.banner || ""
-  );
+  selectedEvent?.banner || ""
+);
+
+const [uploading, setUploading] = useState(false);
 
   const [status, setStatus] = useState(
   selectedEvent?.status || "UPCOMING"
@@ -60,20 +62,50 @@ export default function EventModal({
   const [featured, setFeatured] = useState(
     selectedEvent?.featured || false
   );
-  
+
+  const handleImageUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  setUploading(true);
+
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  setUploading(false);
+
+  if (!response.ok) {
+    alert("Image upload failed");
+    return;
+  }
+
+  setBanner(data.imageUrl);
+};
   const handleSubmit = async () => {
 
     if (
-      !title ||
-      !description ||
-      !venue ||
-      !category ||
-      !date ||
-      !time
-    ) {
-      alert("Please fill all required fields.");
-      return;
-    }
+  !title ||
+  !description ||
+  !venue ||
+  !category ||
+  !date ||
+  !time ||
+  !banner
+) {
+  alert("Please complete all required fields.");
+  return;
+}
 
     try {
       if (mode === "add") {
@@ -233,15 +265,32 @@ export default function EventModal({
             </div>
 
             <div>
-              <label className="mb-2 block font-medium text-gray-700">
-                Banner URL
-              </label>
-              <input
-                type="url"
-                value={banner}
-                onChange={(e) => setBanner(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 p-3 text-gray-900 outline-none focus:border-[#303F9F]"
-              />
+              <div>
+  <label className="mb-2 block font-medium text-gray-700">
+    Event Banner
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
+  />
+
+  {uploading && (
+    <p className="mt-2 text-sm text-blue-600">
+      Uploading...
+    </p>
+  )}
+
+  {banner && (
+    <img
+      src={banner}
+      alt="Banner Preview"
+      className="mt-3 h-40 w-full rounded-xl object-cover"
+    />
+  )}
+</div>
             </div>
 
             <div>
