@@ -31,11 +31,12 @@ export default function FolderCard({ folder, onEdit, onDelete }: Props) {
         cursor-pointer
         overflow-hidden
         rounded-2xl
+        border border-slate-200/80
         bg-white
-        shadow-sm
+        shadow-[0_12px_30px_rgba(24,59,122,0.07)]
         transition
         hover:-translate-y-1
-        hover:shadow-xl
+        hover:shadow-[0_18px_40px_rgba(24,59,122,0.14)]
       "
     >
       {/* Cover Image */}
@@ -76,7 +77,7 @@ export default function FolderCard({ folder, onEdit, onDelete }: Props) {
             backdrop-blur
           "
         >
-          <Folder size={18} className="text-[#303F9F]" />
+          <Folder size={18} className="text-[#c218d4]" />
         </div>
 
         {/* Photo count badge */}
@@ -164,7 +165,7 @@ export default function FolderCard({ folder, onEdit, onDelete }: Props) {
 
       {/* Info */}
       <div className="space-y-1.5 p-5">
-        <h2 className="truncate text-lg font-bold text-gray-900">
+        <h2 className="truncate text-lg font-bold text-[#183b7a]">
           {folder.eventName}
         </h2>
 
