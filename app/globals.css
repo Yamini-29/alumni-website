@@ -32,6 +32,35 @@ body {
   background: var(--background);
 }
 
+.alumni-map-cluster {
+  align-items: center;
+  background: #c218d4;
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 20px rgba(24, 59, 122, 0.3);
+  color: #ffffff;
+  display: flex;
+  height: 46px !important;
+  justify-content: center;
+  line-height: 1;
+  overflow: hidden;
+  text-align: center;
+  width: 46px !important;
+}
+
+.alumni-map-cluster span {
+  align-items: center;
+  display: grid;
+  font-size: 0.875rem;
+  font-weight: 700;
+  inset: 0;
+  line-height: 1;
+  position: absolute;
+  text-align: center;
+  white-space: nowrap;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;

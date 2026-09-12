@@ -1,6 +1,7 @@
 "use client";
 
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import { useEffect, useMemo, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -72,14 +73,24 @@ function Legend({
 export default function AlumniMap() {
   const [locations, setLocations] = useState<MapLocation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/public/map")
       .then((response) => {
-        if (!response.ok) throw new Error("Failed to load map locations");
-        return response.json();
+        return response.json().then((payload) => {
+          if (!response.ok) {
+            throw new Error(payload.detail || payload.error || "Failed to load map locations");
+          }
+          return payload as MapLocation[];
+        });
       })
-      .then(setLocations)
+      .then((data) => setLocations(data))
+      .catch((failure: unknown) => {
+        const message = failure instanceof Error ? failure.message : "Unknown map loading error";
+        console.error("Public map request failed", failure);
+        setError(message);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -158,48 +169,57 @@ export default function AlumniMap() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {locations.map((location) => (
-              <CircleMarker
-                key={location.id}
-                center={[location.latitude, location.longitude]}
-                radius={8}
-                pathOptions={{
-                  color: getColor(location.type),
-                  fillOpacity: 0.95,
-                  weight:2
-                }}
-              >
-                <Popup>
-
-                  <div className="min-w-[180px]">
-
-                    <h3 className="font-bold text-[#183B7A]">
-
-                      {location.name}
-
-                    </h3>
-
-                    <p className="mt-2 text-slate-600">
-
-                      {location.college}
-
-                    </p>
-
-                    <p className="mt-1 text-sm text-slate-500">
-                      {location.city}
-
-                    </p>
-
-                  </div>
-
-                </Popup>
-              </CircleMarker>
-            ))}
+            <MarkerClusterGroup
+              chunkedLoading
+              showCoverageOnHover={false}
+              spiderfyOnMaxZoom
+              iconCreateFunction={(cluster: { getChildCount: () => number }) =>
+                L.divIcon({
+                  html: `<span>${cluster.getChildCount()}</span>`,
+                  className: "alumni-map-cluster",
+                  iconSize: L.point(42, 42, true),
+                })
+              }
+            >
+              {locations.map((location) => (
+                <CircleMarker
+                  key={location.id}
+                  center={[location.latitude, location.longitude]}
+                  radius={8}
+                  pathOptions={{
+                    color: getColor(location.type),
+                    fillOpacity: 0.95,
+                    weight: 2,
+                  }}
+                >
+                  <Popup>
+                    <div className="min-w-[180px]">
+                      <h3 className="font-bold text-[#183B7A]">
+                        {location.name}
+                      </h3>
+                      <p className="mt-2 text-slate-600">
+                        {location.college}
+                      </p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {location.city}
+                      </p>
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              ))}
+            </MarkerClusterGroup>
           </MapContainer>
           {loading && (
             <div className="absolute inset-0 z-[900] flex items-center justify-center bg-white/45 backdrop-blur-[2px]">
               <p className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#183B7A] shadow-lg">
                 Loading alumni locations...
+              </p>
+            </div>
+          )}
+          {error && !loading && (
+            <div className="absolute inset-x-4 top-4 z-[1000] flex justify-center">
+              <p className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-red-700 shadow-lg">
+                Map unavailable: {error}
               </p>
             </div>
           )}
