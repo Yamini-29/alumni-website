@@ -1,10 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ChevronRight, ImagePlus, ImageOff } from "lucide-react";
 
-import galleryData from "@/data/gallery.json";
 import { GalleryFolder, GalleryPhoto } from "@/types/gallery";
 
 import PhotoCard from "@/components/admin/gallery/PhotoCard";
@@ -16,9 +15,27 @@ export default function GalleryFolderPage() {
   const params = useParams<{ folderId: string }>();
   const router = useRouter();
 
-  const [folders, setFolders] = useState<GalleryFolder[]>(
-    galleryData as GalleryFolder[]
-  );
+  const [folders, setFolders] = useState<GalleryFolder[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFolders = async () => {
+      try {
+        const response = await fetch("/api/admin/gallery");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch gallery folders");
+        }
+
+        const data: GalleryFolder[] = await response.json();
+        setFolders(data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFolders();
+  }, []);
 
   const folder = useMemo(
     () => folders.find((f) => f.id === params.folderId) || null,
@@ -61,6 +78,14 @@ export default function GalleryFolderPage() {
       photos.filter((p) => p.id !== photo.id)
     );
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-600">
+        Loading gallery...
+      </div>
+    );
+  }
 
   if (!folder) {
     return (

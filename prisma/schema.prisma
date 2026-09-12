@@ -121,3 +121,28 @@ enum AnnouncementStatus {
   PUBLISHED
   DRAFT
 }
+
+model GalleryFolder {
+  id          String   @id @default(cuid())
+
+  eventName   String
+  eventDate   String
+
+  coverImage  String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  images      GalleryImage[]
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+
+  imageUrl  String
+
+  folderId  String
+  folder    GalleryFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}

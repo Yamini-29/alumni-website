@@ -1,13 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Folder as FolderIcon, Upload } from "lucide-react";
 import { GalleryFolder } from "@/types/gallery";
 
 interface Props {
-  folders: GalleryFolder[];
-  setFolders: React.Dispatch<React.SetStateAction<GalleryFolder[]>>;
   closeModal: () => void;
+  onSuccess: () => Promise<void>;
 
   mode: "add" | "edit";
 
@@ -15,9 +14,8 @@ interface Props {
 }
 
 export default function FolderModal({
-  folders,
-  setFolders,
   closeModal,
+  onSuccess,
   mode,
   selectedFolder,
 }: Props) {
@@ -33,55 +31,79 @@ export default function FolderModal({
     selectedFolder?.description || ""
   );
 
+  const [images, setImages] = useState<string[]>(
+    selectedFolder?.photos.map((photo) => photo.url) || []
+  );
   const [coverImage, setCoverImage] = useState(
     selectedFolder?.coverImage || ""
   );
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleCoverFileChange = (
+  const handleUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
 
-    const objectUrl = URL.createObjectURL(file);
-    setCoverImage(objectUrl);
+    try {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("/api/upload/gallery", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error("Image upload failed");
+        }
+
+        const data: { imageUrl: string } = await response.json();
+        setImages((previous) => [...previous, data.imageUrl]);
+        setCoverImage((previous) => previous || data.imageUrl);
+      }
+    } catch {
+      alert("Image upload failed");
+    } finally {
+      e.target.value = "";
+    }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!eventName || !eventDate || !coverImage) {
       alert("Please fill in Event Name, Event Date and Cover Image.");
       return;
     }
 
     if (mode === "add") {
-      const newFolder: GalleryFolder = {
-        id: `${eventName.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`,
-        eventName,
-        eventDate,
-        description,
-        coverImage,
-        createdDate: new Date().toISOString().split("T")[0],
-        photos: [],
-      };
-
-      setFolders([...folders, newFolder]);
+      await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventName,
+          eventDate,
+          coverImage,
+          images,
+        }),
+      });
     } else {
-      setFolders(
-        folders.map((folder) =>
-          folder.id === selectedFolder?.id
-            ? {
-                ...folder,
-                eventName,
-                eventDate,
-                description,
-                coverImage,
-              }
-            : folder
-        )
-      );
+      await fetch(`/api/admin/gallery/${selectedFolder?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventName,
+          eventDate,
+          coverImage,
+          images,
+        }),
+      });
     }
+
+    await onSuccess();
 
     closeModal();
   };
@@ -172,16 +194,16 @@ export default function FolderModal({
               </label>
 
               <input
-                ref={fileInputRef}
+                id="gallery-image-upload"
                 type="file"
+                multiple
                 accept="image/*"
                 hidden
-                onChange={handleCoverFileChange}
+                onChange={handleUpload}
               />
 
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
+              <label
+                htmlFor="gallery-image-upload"
                 className="
                   flex
                   w-full
@@ -202,8 +224,8 @@ export default function FolderModal({
                 "
               >
                 <Upload size={16} />
-                {coverImage ? "Replace Cover Image" : "Choose Cover Image"}
-              </button>
+                {images.length ? "Add More Images" : "Choose Images"}
+              </label>
 
               <p className="mt-2 text-xs text-gray-600">
                 Pick an image from your computer to use as the folder cover.

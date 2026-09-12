@@ -4,22 +4,23 @@ import { AlertTriangle } from "lucide-react";
 import { GalleryFolder } from "@/types/gallery";
 
 interface Props {
-  folders: GalleryFolder[];
-  setFolders: React.Dispatch<React.SetStateAction<GalleryFolder[]>>;
   selectedFolder: GalleryFolder;
+  onSuccess: () => Promise<void>;
   closeModal: () => void;
 }
 
 export default function DeleteFolderModal({
-  folders,
-  setFolders,
   selectedFolder,
+  onSuccess,
   closeModal,
 }: Props) {
-  const handleDelete = () => {
-    setFolders(
-      folders.filter((folder) => folder.id !== selectedFolder.id)
-    );
+  const handleDelete = async () => {
+    await fetch(`/api/admin/gallery/${selectedFolder.id}`, {
+      method: "DELETE",
+    });
+
+    await onSuccess();
+
     closeModal();
   };
 

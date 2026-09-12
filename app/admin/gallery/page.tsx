@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FolderPlus } from "lucide-react";
 
-import galleryData from "@/data/gallery.json";
 import { GalleryFolder } from "@/types/gallery";
 
 import FolderCard from "@/components/admin/gallery/FolderCard";
@@ -11,9 +10,9 @@ import FolderModal from "@/components/admin/gallery/FolderModal";
 import DeleteFolderModal from "@/components/admin/gallery/DeleteFolderModal";
 
 export default function GalleryPage() {
-  const [folders, setFolders] = useState<GalleryFolder[]>(
-    galleryData as GalleryFolder[]
-  );
+  const [folders, setFolders] =
+useState<GalleryFolder[]>([]);
+  
 
   const [search, setSearch] = useState("");
 
@@ -28,6 +27,17 @@ export default function GalleryPage() {
       folder.eventName.toLowerCase().includes(search.toLowerCase())
     );
   }, [folders, search]);
+  async function fetchFolders() {
+  const response = await fetch("/api/admin/gallery");
+
+  const data = await response.json();
+
+  setFolders(data);
+}
+
+useEffect(() => {
+  fetchFolders();
+}, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -154,23 +164,22 @@ export default function GalleryPage() {
       {/* Add / Edit Folder Modal */}
       {showModal && (
         <FolderModal
-          folders={folders}
-          setFolders={setFolders}
           selectedFolder={selectedFolder}
           mode={selectedFolder ? "edit" : "add"}
+          onSuccess={fetchFolders}
           closeModal={() => {
             setShowModal(false);
             setSelectedFolder(null);
           }}
+         
         />
       )}
 
       {/* Delete Folder Modal */}
       {showDeleteModal && selectedFolder && (
         <DeleteFolderModal
-          folders={folders}
-          setFolders={setFolders}
           selectedFolder={selectedFolder}
+          onSuccess={fetchFolders}
           closeModal={() => {
             setShowDeleteModal(false);
             setSelectedFolder(null);
