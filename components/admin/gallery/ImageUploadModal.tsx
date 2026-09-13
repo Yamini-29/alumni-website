@@ -23,9 +23,7 @@ export default function ImageUploadModal({
   const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFilesSelected = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -65,9 +63,7 @@ export default function ImageUploadModal({
       <div className="flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Header */}
         <div className="border-b border-gray-200 px-8 py-6">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Upload Images
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900">Upload Images</h2>
           <p className="mt-1 text-gray-700">
             Add new photos to{" "}
             <span className="font-semibold text-gray-900">
@@ -78,7 +74,10 @@ export default function ImageUploadModal({
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto p-8">
+        <div
+          data-lenis-prevent
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-8"
+        >
           <input
             ref={fileInputRef}
             type="file"
@@ -124,8 +123,7 @@ export default function ImageUploadModal({
             <div className="mt-6">
               <p className="mb-3 text-sm font-medium text-gray-700">
                 {pendingFiles.length}{" "}
-                {pendingFiles.length === 1 ? "image" : "images"} ready to
-                upload
+                {pendingFiles.length === 1 ? "image" : "images"} ready to upload
               </p>
 
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
@@ -200,8 +198,7 @@ export default function ImageUploadModal({
               hover:bg-[#283593]
             "
           >
-            Upload{" "}
-            {pendingFiles.length > 0 ? `(${pendingFiles.length})` : ""}
+            Upload {pendingFiles.length > 0 ? `(${pendingFiles.length})` : ""}
           </button>
         </div>
       </div>

@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import GlassCards from "./GlassCards";
 
-const images = [
-  "/images/school1.jpg",
-
-  "/images/school3.jpg",
-];
+const images = ["/images/school1.jpg", "/images/school3.jpg"];
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
@@ -23,7 +19,6 @@ export default function Hero() {
 
   return (
     <section className="hero-section relative h-screen overflow-hidden text-white items-center justify-center flex text-center">
-
       {/* Background Images */}
       {images.map((img, index) => (
         <img
@@ -57,15 +52,24 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 text-lg text-gray-200">
-A Legacy That Lives Beyond Classrooms,Reconnect with your roots, celebrate achievements, and grow together as one alumni community.        </p>
+          A Legacy That Lives Beyond Classrooms,Reconnect with your roots,
+          celebrate achievements, and grow together as one alumni
+          community.{" "}
+        </p>
 
         {/* CTA */}
         <div className="mt-8 flex justify-center gap-4">
-          <button className="px-6 py-3 bg-[#C9A227] text-black font-semibold rounded-full hover:scale-105 transition">
+          <button
+            className="px-6 py-3 bg-[#C9A227] text-black font-semibold rounded-full hover:scale-105 transition"
+            onClick={() => (window.location.href = "/public/directory")}
+          >
             Explore Alumni
           </button>
 
-          <button className="px-6 py-3 border border-white text-white rounded-full hover:bg-white hover:text-black transition">
+          <button
+            className="px-6 py-3 border border-white text-white rounded-full hover:bg-white hover:text-black transition"
+            onClick={() => (window.location.href = "/public/events")}
+          >
             View Events
           </button>
         </div>
@@ -90,8 +94,6 @@ A Legacy That Lives Beyond Classrooms,Reconnect with your roots, celebrate achie
       <div className="absolute bottom-10 right-10 text-white animate-bounce text-xl">
         ↓
       </div>
-
-      
     </section>
   );
 }

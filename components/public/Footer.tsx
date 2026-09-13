@@ -1,100 +1,163 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type UpcomingEvent = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+};
+
+const browseLinks = [
+  { label: "Directory", href: "/public/directory" },
+  { label: "Events", href: "/public/events" },
+  { label: "Gallery", href: "/public/gallery" },
+  { label: "Announcements", href: "/public/announcements" },
+];
+
+const alumniLocations = [
+  ["6,932", "Bengaluru"],
+  ["512", "Hyderabad"],
+  ["359", "Chennai"],
+];
+
+function formatEventDate(date: string) {
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
 export default function Footer() {
+  const [events, setEvents] = useState<UpcomingEvent[]>([]);
+
+  useEffect(() => {
+    fetch("/api/public/events?section=upcoming&limit=3")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((result) => setEvents(result?.items?.slice(0, 3) ?? []))
+      .catch(() => setEvents([]));
+  }, []);
+
   return (
-    <footer className="mt-20">
+    <footer className="mt-20 bg-[#0b1e3c] text-white">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:px-10">
+        {/* Main footer */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          {/* Brand */}
+          <div>
+            <Link
+              href="/"
+              className="text-xl font-bold text-white transition hover:text-[#C218D4]"
+            >
+              Thamarai International School
+            </Link>
 
-      {/* 🔝 TOP MAP SECTION */}
-      <div className="relative h-[300px] text-white flex items-center justify-center text-center">
+            <p className="mt-3 max-w-xs text-sm leading-6 text-white/55">
+              Reconnect with your roots, celebrate achievements, and grow
+              together through our alumni community.
+            </p>
 
-        {/* Background */}
-        <img
-          src="/images/map.jpg"
-          className="absolute w-full h-full object-cover"
-        />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/70"></div>
-
-        {/* Content */}
-        <div className="relative z-10">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
-            Top cities where our alumni live
-          </h2>
-
-          <div className="flex flex-wrap justify-center gap-10 text-[#C9A227] font-semibold">
-
-            <div>
-              <p className="text-sm text-gray-300">6932 alumni</p>
-              <p className="text-xl">Bengaluru</p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-300">512 alumni</p>
-              <p className="text-xl">Hyderabad</p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-300">359 alumni</p>
-              <p className="text-xl">Chennai</p>
-            </div>
-
+            {/* Small network summary
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+              {alumniLocations.map(([count, city]) => (
+                <Link key={city} href="/public/clusters" className="group">
+                  <span className="text-sm font-semibold text-white transition group-hover:text-[#C218D4]">
+                    {count}
+                  </span>{" "}
+                  <span className="text-xs text-white/45">{city}</span>
+                </Link>
+              ))}
+            </div> */}
           </div>
-        </div>
-      </div>
-
-      {/* 🔻 MAIN FOOTER */}
-      <div className="bg-[#2c2c2c] text-gray-300 px-10 py-12">
-
-        <div className="grid md:grid-cols-4 gap-10 text-sm">
 
           {/* Browse */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Browse</h3>
-            <ul className="space-y-2">
-              <li>Directory</li>
-              <li>Map</li>
-              <li>Location</li>
-            </ul>
+            <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white/50">
+              Browse
+            </h3>
+
+            <nav aria-label="Footer navigation" className="space-y-2.5">
+              {browseLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block text-sm text-white/65 transition hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
-          {/* Events */}
+          {/* Upcoming Events */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Events</h3>
-            <ul className="space-y-2">
-              <li>Annual Reunion 2025</li>
-              <li>Alumni Meet 2024</li>
-            </ul>
+            <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white/50">
+              Upcoming events
+            </h3>
+
+            {events.length > 0 ? (
+              <ul className="space-y-4">
+                {events.map((event) => (
+                  <li key={event.id}>
+                    <Link href="/public/events" className="group block">
+                      <span className="block text-sm font-medium text-white/80 transition group-hover:text-white">
+                        {event.title}
+                      </span>
+
+                      <span className="mt-1 block text-xs text-white/40">
+                        {formatEventDate(event.date)}
+                        {event.time ? ` · ${event.time}` : ""}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-white/40">No upcoming events yet.</p>
+            )}
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Connect to us</h3>
-            <p>info@school.com</p>
-            <p>+91 98765 43210</p>
-          </div>
+            <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-white/50">
+              Connect
+            </h3>
 
-          {/* Policies */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li>Privacy Policy</li>
-              <li>Terms of Use</li>
-            </ul>
-          </div>
+            <div className="space-y-3 text-sm">
+              <a
+                href="mailto:info@school.com"
+                className="block text-white/65 transition hover:text-white"
+              >
+                info@school.com
+              </a>
 
+              <a
+                href="tel:+919876543210"
+                className="block text-white/65 transition hover:text-white"
+              >
+                +91 98765 43210
+              </a>
+
+              <Link
+                href="/public/about"
+                className="block text-white/65 transition hover:text-white"
+              >
+                About the alumni network
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 Thamarai International School Alumni</p>
+
+          <p>Built for the alumni community</p>
         </div>
       </div>
-
-      {/* 🟠 BOTTOM BAR
-      <div className="bg-[#9b98b7] text-white text-sm flex justify-between px-10 py-4">
-
-        <p>© Copyright 2026</p>
-
-        <p>
-          Built by Alumni Network
-        </p>
-
-      </div> */}
-
     </footer>
   );
 }
