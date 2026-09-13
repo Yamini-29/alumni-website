@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Search, Images, CalendarDays } from "lucide-react";
+
+import SectionHero from "@/components/public/SectionHero";
 
 type GalleryImage = {
   id: string;
@@ -40,13 +43,11 @@ export default function GalleryPage() {
         setLoading(true);
         setError(false);
 
-        const response = await fetch("/api/public/gallery?limit=24");
+        const res = await fetch("/api/public/gallery?limit=24");
 
-        if (!response.ok) {
-          throw new Error("Unable to load gallery");
-        }
+        if (!res.ok) throw new Error();
 
-        setResult(await response.json());
+        setResult(await res.json());
       } catch {
         setError(true);
       } finally {
@@ -57,211 +58,142 @@ export default function GalleryPage() {
     loadGallery();
   }, []);
 
-  const filteredFolders = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim();
 
-    if (!query) return result.items;
+    if (!q) return result.items;
 
     return result.items.filter((folder) =>
-      folder.eventName.toLowerCase().includes(query)
+      folder.eventName.toLowerCase().includes(q)
     );
   }, [result.items, search]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pb-16 pt-20">
-      {/* Header */}
-      <header className="relative overflow-hidden bg-[#183b7a] px-6 py-16 text-white md:px-10">
-        {/* Decorative circle */}
-        <div className="absolute -right-20 -top-32 h-80 w-80 rounded-full border-[34px] border-[#c218d4]/20" />
+    <div className="min-h-screen bg-[#F7F4ED]">
+      <SectionHero
+        label="MEMORIES & MOMENTS"
+        title="Relive Every Celebration"
+                description="Explore photographs from reunions, graduations, cultural festivals and unforgettable moments shared by the Thamarai International School alumni community."
 
-        <div className="relative mx-auto max-w-7xl">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#d8a11c]">
-            Shared memories
-          </p>
+        showLogo
+      />
 
-          <h1 className="mt-3 text-4xl font-bold md:text-5xl">
-            Photo gallery
-          </h1>
+      <main className="mx-auto max-w-7xl px-6 pb-20">
+        {/* Search Panel */}
+        <section className="-mt-10 mb-14 relative z-20">
+            {/* <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-[#F8FAFC] px-5 py-4">
+              <Search className="text-slate-400" size={20} />
 
-          <p className="mt-4 max-w-xl text-slate-200">
-            Explore memories from alumni events, reunions, and school
-            gatherings.
-          </p>
-        </div>
-      </header>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search albums by event name..."
+                className="w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400"
+              />
+            </div> */}
 
-      {/* Main */}
-      <main className="mx-auto max-w-7xl px-6 py-12 md:px-10">
-        {/* Section Header */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-[#183b7a]">
-            Event albums
+            {/* <div className="mt-5 flex items-center justify-between text-sm">
+              <p className="text-slate-500">
+                {filtered.length} album{filtered.length !== 1 && "s"} available
+              </p> */}
+
+              {/* <div className="flex items-center gap-2 text-[#183B7A] font-medium">
+                <Images size={18} />
+                Alumni Gallery
+              </div> */}
+        </section>
+
+        {/* Section Heading */}
+        <section className="mb-10 text-center">
+        
+
+          <h2 className="mt-3 text-4xl font-bold text-[#12233D]">
+            Featured Event Albums
           </h2>
 
-          <p className="mt-1 text-slate-600">
-            Browse memories shared by the alumni community.
-          </p>
-        </div>
-
-        {/* Search */}
-        <div className="mb-8">
-          <input
-            type="text"
-            placeholder="Search by event name..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="
-              w-full
-              rounded-2xl
-              border
-              border-slate-200
-              bg-white
-              px-5
-              py-4
-              text-slate-800
-              shadow-sm
-              outline-none
-              transition
-              placeholder:text-slate-400
-              focus:border-[#303F9F]
-              focus:ring-2
-              focus:ring-[#303F9F]/10
-            "
-          />
-        </div>
+         
+        </section>
 
         {/* Loading */}
         {loading && (
-          <div className="rounded-2xl bg-white py-16 text-center shadow-sm">
+          <div className="rounded-3xl border border-[#E8E2D6] bg-white py-20 text-center">
+            <Images
+              className="mx-auto mb-4 text-[#183B7A]/40"
+              size={42}
+            />
             <p className="text-slate-500">Loading gallery...</p>
           </div>
         )}
 
         {/* Error */}
         {!loading && error && (
-          <div className="rounded-2xl border border-red-100 bg-white p-12 text-center">
-            <h2 className="text-xl font-bold text-gray-900">
+          <div className="rounded-3xl border border-red-100 bg-white py-20 text-center">
+            <h3 className="text-2xl font-bold text-[#12233D]">
               Unable to load gallery
-            </h2>
+            </h3>
 
-            <p className="mt-2 text-slate-500">
-              We could not load the gallery right now. Please try again later.
+            <p className="mt-3 text-slate-500">
+              Please try again in a few moments.
             </p>
           </div>
         )}
 
-        {/* Gallery */}
-        {!loading && !error && filteredFolders.length > 0 && (
-          <div
-            className="
-              grid
-              gap-6
-              sm:grid-cols-2
-              xl:grid-cols-3
-              2xl:grid-cols-4
-            "
-          >
-            {filteredFolders.map((folder) => {
-              const coverImage =
-                folder.coverImage || folder.photos[0]?.url || null;
+        {/* Albums */}
+        {!loading && !error && filtered.length > 0 && (
+          <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((folder) => {
+              const cover =
+                folder.coverImage || folder.photos[0]?.url;
 
               return (
                 <Link
                   key={folder.id}
                   href={`/public/gallery/${folder.id}`}
-                  className="group block"
+                  className="group"
                 >
-                  <article
-                    className="
-                      overflow-hidden
-                      rounded-2xl
-                      border
-                      border-slate-200/80
-                      bg-white
-                      shadow-[0_12px_30px_rgba(24,59,122,0.07)]
-                      transition
-                      duration-300
-                      group-hover:-translate-y-1
-                      group-hover:shadow-[0_18px_40px_rgba(24,59,122,0.14)]
-                    "
-                  >
+                  <article className="overflow-hidden rounded-[28px] border border-[#E8E2D6] bg-white shadow-[0_18px_45px_rgba(24,59,122,0.08)] transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_28px_60px_rgba(24,59,122,0.14)]">
                     {/* Cover */}
-                    <div className="relative overflow-hidden">
-                      {coverImage ? (
+                    <div className="relative h-64 overflow-hidden">
+                      {cover ? (
                         <img
-                          src={coverImage}
+                          src={cover}
                           alt={folder.eventName}
-                          className="
-                            h-52
-                            w-full
-                            object-cover
-                            transition
-                            duration-500
-                            group-hover:scale-105
-                          "
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                         />
                       ) : (
-                        <div
-                          className="
-                            flex
-                            h-52
-                            items-center
-                            justify-center
-                            bg-[#183b7a]
-                            text-5xl
-                            font-bold
-                            text-white
-                          "
-                        >
-                          {folder.eventName.charAt(0).toUpperCase()}
+                        <div className="flex h-full items-center justify-center bg-[#183B7A] text-6xl font-bold text-white">
+                          {folder.eventName[0]}
                         </div>
                       )}
 
-                      {/* Bottom gradient */}
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0b1e3c]/50 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#102548]/85 via-transparent to-transparent" />
+
+                      <div className="absolute bottom-5 left-5 flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 backdrop-blur-md">
+                        <Images size={15} className="text-white" />
+                        <span className="text-sm text-white">
+                          {folder.photos.length} Photos
+                        </span>
+                      </div>
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-3 p-5">
-                      {/* Metadata */}
-                      <div className="flex items-center justify-between gap-3 text-sm">
-                        <span className="font-medium text-[#82690d]">
-                          {folder.eventDate}
-                        </span>
-
-                        <span className="text-slate-500">
-                          {folder.photos.length}{" "}
-                          {folder.photos.length === 1
-                            ? "photo"
-                            : "photos"}
-                        </span>
+                    <div className="space-y-4 p-6">
+                      <div className="flex items-center gap-2 text-sm text-[#82690D] font-semibold">
+                        <CalendarDays size={15} />
+                        {folder.eventDate}
                       </div>
 
-                      {/* Title */}
-                      <h2
-                        className="
-                          text-xl
-                          font-bold
-                          leading-tight
-                          text-[#183b7a]
-                          transition
-                          group-hover:text-[#303F9F]
-                        "
-                      >
+                      <h3 className="text-2xl font-bold leading-tight text-[#183B7A] group-hover:text-[#2E56A6] transition">
                         {folder.eventName}
-                      </h2>
+                      </h3>
 
-                      {/* Description */}
-                      {folder.description && (
-                        <p className="line-clamp-2 text-sm leading-6 text-slate-600">
-                          {folder.description}
-                        </p>
-                      )}
+                      <p className="line-clamp-3 text-sm leading-7 text-slate-600">
+                        {folder.description}
+                      </p>
 
-                      {/* View album */}
-                      <div className="border-t border-slate-100 pt-3">
-                        <span className="text-sm font-semibold text-[#303F9F]">
-                          View album →
+                      <div className="border-t border-slate-100 pt-4">
+                        <span className="font-semibold text-[#183B7A] group-hover:text-[#D8A11C] transition">
+                          View Album →
                         </span>
                       </div>
                     </div>
@@ -272,38 +204,28 @@ export default function GalleryPage() {
           </div>
         )}
 
-        {/* Empty State */}
-        {!loading && !error && filteredFolders.length === 0 && (
-          <div className="rounded-2xl bg-white py-16 text-center shadow-sm">
-            <h2 className="text-2xl font-bold text-[#183b7a]">
-              No albums found
-            </h2>
+        {/* Empty */}
+        {!loading && !error && filtered.length === 0 && (
+          <div className="rounded-3xl border border-[#E8E2D6] bg-white py-20 text-center">
+            <Images
+              className="mx-auto mb-5 text-[#183B7A]/30"
+              size={48}
+            />
 
-            <p className="mt-3 text-slate-600">
-              {search
-                ? "Try a different search."
-                : "There are no gallery albums available yet."}
+            <h3 className="text-2xl font-bold text-[#12233D]">
+              No albums found
+            </h3>
+
+            <p className="mt-3 text-slate-500">
+              Try searching with a different event name.
             </p>
 
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="
-                  mt-6
-                  rounded-xl
-                  bg-[#303F9F]
-                  px-6
-                  py-3
-                  font-semibold
-                  text-white
-                  transition
-                  hover:bg-[#283593]
-                "
-              >
-                Clear Search
-              </button>
-            )}
+            <button
+              onClick={() => setSearch("")}
+              className="mt-6 rounded-xl bg-[#183B7A] px-6 py-3 font-semibold text-white hover:bg-[#122E61]"
+            >
+              Clear Search
+            </button>
           </div>
         )}
       </main>
