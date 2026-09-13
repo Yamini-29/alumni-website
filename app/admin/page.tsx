@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Topbar from "@/components/admin/Topbar";
 import StatsCard from "@/components/admin/StatsCard";
@@ -7,7 +8,7 @@ import StatsCard from "@/components/admin/StatsCard";
 import {
   Users,
   CalendarDays,
-  Image,
+  Image as ImageIcon,
   Megaphone,
 } from "lucide-react";
 
@@ -73,6 +74,33 @@ export default function AdminDashboard() {
 
       <div className="p-8">
 
+        <div className="mb-8 flex items-center justify-between overflow-hidden rounded-2xl border border-[#E4DCCB] bg-[#FCFBF8] p-6 shadow-sm">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#D89B06]">
+              Alumni Administration
+            </p>
+
+            <h1 className="mt-2 text-3xl font-bold text-[#183B7A]">
+              Welcome to Thamarai International School
+            </h1>
+
+            <p className="mt-2 max-w-2xl text-gray-600">
+              Manage alumni records, events, announcements, gallery memories,
+              and leadership content from one place.
+            </p>
+          </div>
+
+          <div className="hidden rounded-full bg-white p-3 shadow-sm md:block">
+            <Image
+              src="/images/tis_logo.png"
+              alt="Thamarai International School logo"
+              width={96}
+              height={96}
+              className="object-contain"
+            />
+          </div>
+        </div>
+
         <h1 className="text-3xl font-bold mb-8 text-gray-700">
           Dashboard
         </h1>
@@ -94,7 +122,7 @@ export default function AdminDashboard() {
           <StatsCard
             title="Gallery Images"
             value={isLoading ? "..." : stats.galleryImages.toLocaleString()}
-            icon={<Image />}
+            icon={<ImageIcon />}
           />
 
           <StatsCard
