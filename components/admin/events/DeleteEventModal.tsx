@@ -16,7 +16,7 @@ export default function DeleteEventModal({
   onSuccess
 }: Props) {
   const handleDelete = async () => {
-    
+    if (!selectedEvent) return;
 
     await fetch(
 `/api/admin/events/${selectedEvent.id}`,

@@ -62,7 +62,7 @@ export default function ExportCenterModal({
     const statusMatch =
       includeHidden
         ? true
-        : item.status !== "Hidden";
+        : item.status !== "HIDDEN";
     return (
       batchMatch &&
       categoryMatch &&

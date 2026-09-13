@@ -44,11 +44,11 @@ useEffect(() => {
           .toLowerCase()
           .includes(search.toLowerCase()) ||
 
-        event.venue
+        (event.venue ?? "")
           .toLowerCase()
           .includes(search.toLowerCase()) ||
 
-        event.category
+        (event.category ?? "")
           .toLowerCase()
           .includes(search.toLowerCase())
       );
