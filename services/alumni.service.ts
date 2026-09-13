@@ -8,6 +8,9 @@ export class AlumniService {
     college: string;
     company: string;
     city: string;
+    linkedin?: string;
+    phone?: string;
+    address?: string;
     status: "ACTIVE" | "HIDDEN";
   }) {
 
@@ -32,6 +35,9 @@ export class AlumniService {
   college: string;
   company: string;
   city: string;
+  linkedin?: string;
+  phone?: string;
+  address?: string;
   status: "ACTIVE" | "HIDDEN";
 }[]) {
 
@@ -49,6 +55,9 @@ static async updateAlumni(
     college?: string;
     company?: string;
     city?: string;
+    linkedin?: string;
+    phone?: string;
+    address?: string;
     status?: "ACTIVE" | "HIDDEN";
   }
 ) {

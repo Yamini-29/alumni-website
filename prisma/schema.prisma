@@ -50,17 +50,23 @@ enum AdminRole {
 }
 
 model Alumni {
-  id         String        @id @default(cuid())
-  name       String
-  batch      String
-  college    String
-  company    String
-  city       String
-  category   String        @default("Others")
-  status     AlumniStatus  @default(ACTIVE)
+  id          String        @id @default(cuid())
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  name        String
+  batch       String
+  college     String
+  company     String
+  city        String
+
+  // NEW OPTIONAL FIELDS
+  linkedin    String?
+  phone       String?
+  address     String?
+
+  status      AlumniStatus  @default(ACTIVE)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum AlumniStatus {

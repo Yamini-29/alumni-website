@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
   const limit = numberParam(searchParams.get("limit"), DEFAULT_LIMIT, MAX_LIMIT);
   const q = searchParams.get("q")?.trim() ?? "";
   const batch = searchParams.get("batch")?.trim() ?? "";
-  const category = searchParams.get("category")?.trim() ?? "All";
   const city = searchParams.get("city")?.trim() ?? "";
   const where = {
     status: "ACTIVE" as const,
@@ -29,8 +28,24 @@ export async function GET(request: NextRequest) {
         mode: "insensitive" as const,
       },
     }),
-    ...(category !== "All" && { category }),
   };
-  const [items, total] = await prisma.$transaction([prisma.alumni.findMany({ where, orderBy: { name: "asc" }, skip: (page - 1) * limit, take: limit }), prisma.alumni.count({ where })]);
+  const [items, total] = await prisma.$transaction([
+    prisma.alumni.findMany({
+      where,
+      select: {
+        id: true,
+        name: true,
+        batch: true,
+        college: true,
+        company: true,
+        city: true,
+        linkedin: true,
+      },
+      orderBy: { name: "asc" },
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.alumni.count({ where }),
+  ]);
   return NextResponse.json({ items, page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) });
 }

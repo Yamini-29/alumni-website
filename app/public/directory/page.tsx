@@ -4,14 +4,13 @@ import AlumniCard from "@/components/public/AlumniCard";
 import Pagination from "@/components/public/Pagination";
 import SectionHero from "@/components/public/SectionHero";
 import DirectoryFilters from "@/components/public/DirectoryFilters";
-type Alumni={id:string;name:string;batch:string;college:string;company:string;city:string}; type Result={items:Alumni[];page:number;total:number;totalPages:number};
+type Alumni={id:string;name:string;batch:string;college:string;company:string;city:string;linkedin?:string | null}; type Result={items:Alumni[];page:number;total:number;totalPages:number};
 
 export default function DirectoryPage(){
   const [result,setResult]=useState<Result>({items:[],page:1,total:0,totalPages:1});
   const [page,setPage]=useState(1);
   const [q,setQ]=useState("");
   const [batch,setBatch]=useState("");
-  const [category, setCategory] = useState("All");
   const [city, setCity] = useState("");
   const [loading,setLoading]=useState(true);useEffect(()=>{
   const timer=setTimeout(()=>{setLoading(true);
@@ -19,10 +18,9 @@ export default function DirectoryPage(){
   `/api/public/alumni?page=${page}
   &q=${encodeURIComponent(q)}
   &batch=${batch}
-  &category=${category}
   &city=${encodeURIComponent(city)}`
 ).then(r=>r.json()).then(setResult).finally(()=>setLoading(false));
-  },250);return()=>clearTimeout(timer)},[page,q,batch,category,city]);
+  },250);return()=>clearTimeout(timer)},[page,q,batch,city]);
   return (
   <div className="min-h-screen bg-[#F7F4ED]">
 
@@ -55,8 +53,6 @@ export default function DirectoryPage(){
             setSearch={setQ}
             batch={batch}
             setBatch={setBatch}
-            category={category}
-            setCategory={setCategory}
             city={city}
             setCity={setCity}
           />

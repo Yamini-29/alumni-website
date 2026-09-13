@@ -9,37 +9,21 @@ interface Props {
   batch: string;
   setBatch: (v: string) => void;
 
-  category: string;
-  setCategory: (v: string) => void;
-
   city: string;
   setCity: (v: string) => void;
 }
-
-const categories = [
-  "All",
-  "IIT",
-  "NIT",
-  "AIIMS",
-  "NEET",
-  "CBSE",
-  "Others",
-];
 
 export default function DirectoryFilters({
   search,
   setSearch,
   batch,
   setBatch,
-  category,
-  setCategory,
   city,
   setCity,
 }: Props) {
   const clear = () => {
     setSearch("");
     setBatch("");
-    setCategory("All");
     setCity("");
   };
 
@@ -59,29 +43,6 @@ export default function DirectoryFilters({
           placeholder="Search alumni, company or college..."
           className="w-full rounded-2xl border border-[#E4DCCB] bg-[#F7F4ED] py-4 pl-14 pr-5 text-slate-800 outline-none focus:border-[#183B7A]"
         />
-      </div>
-
-      {/* Category Chips */}
-      <div className="mt-6">
-        <p className="mb-3 text-sm font-semibold text-[#183B7A]">
-          Higher Education
-        </p>
-
-        <div className="flex flex-wrap gap-3">
-          {categories.map((item) => (
-            <button
-              key={item}
-              onClick={() => setCategory(item)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                category === item
-                  ? "bg-[#183B7A] text-white shadow-lg"
-                  : "bg-[#F7F4ED] text-slate-600 hover:bg-[#EFE9DD]"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Advanced Filters */}

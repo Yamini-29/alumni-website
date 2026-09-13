@@ -13,6 +13,9 @@ export async function POST(request: NextRequest) {
       college: body.college,
       company: body.company,
       city: body.city,
+      linkedin: body.linkedin || undefined,
+      phone: body.phone || undefined,
+      address: body.address || undefined,
       status: body.status.toUpperCase(),
     });
 

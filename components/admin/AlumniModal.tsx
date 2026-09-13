@@ -41,8 +41,20 @@ export default function AlumniModal({
     selectedAlumni?.city || ""
   );
 
-  const [status, setStatus] = useState(
-    selectedAlumni?.status || "Active"
+  const [linkedin, setLinkedin] = useState(
+    selectedAlumni?.linkedin || ""
+  );
+
+  const [phone, setPhone] = useState(
+    selectedAlumni?.phone || ""
+  );
+
+  const [address, setAddress] = useState(
+    selectedAlumni?.address || ""
+  );
+
+  const [status, setStatus] = useState<"ACTIVE" | "HIDDEN">(
+    selectedAlumni?.status || "ACTIVE"
   );
 
   const handleSubmit = async () => {
@@ -70,6 +82,9 @@ export default function AlumniModal({
             college,
             company,
             city,
+            linkedin,
+            phone,
+            address,
             status,
           }),
         });
@@ -90,6 +105,9 @@ export default function AlumniModal({
             college,
             company,
             city,
+            linkedin,
+            phone,
+            address,
             status,
           }),
         });
@@ -171,13 +189,54 @@ export default function AlumniModal({
             className="border border-gray-300 rounded-lg p-3 text-gray-900"
           />
 
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              LinkedIn URL
+            </label>
+            <input
+              type="url"
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              placeholder="https://linkedin.com/in/username"
+              className="border border-gray-300 rounded-lg p-3 text-gray-900 w-full"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+91 9876543210"
+              className="border border-gray-300 rounded-lg p-3 text-gray-900 w-full"
+            />
+          </div>
+
+          <div className="col-span-2">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <textarea
+              rows={3}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Chennai, Tamil Nadu"
+              className="border border-gray-300 rounded-lg p-3 text-gray-900 w-full"
+            />
+          </div>
+
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) =>
+              setStatus(e.target.value as "ACTIVE" | "HIDDEN")
+            }
             className="border border-gray-300 rounded-lg p-3 text-gray-900"
           >
-            <option>Active</option>
-            <option>Hidden</option>
+            <option value="ACTIVE">Active</option>
+            <option value="HIDDEN">Hidden</option>
           </select>
 
         </div>

@@ -1,15 +1,12 @@
 export interface Alumni {
-  id: number;
+  id: string;
   name: string;
-  batch: number;
+  batch: string;
   college: string;
-  degree: string;
   company: string;
   city: string;
-  linkedin: string;
-  category: string;
-  phonenumber: number;
-  email: string;
-  status: "Active" | "Inactive";
-  employmentStatus: "Employed" | "Unemployed" | "Student";
+  linkedin?: string;
+  phone?: string;
+  address?: string;
+  status: "ACTIVE" | "HIDDEN";
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Alumni } from "@/types/alumni";
-import { X } from "lucide-react";
+import { MapPin, Phone, X } from "lucide-react";
 
 
 interface Props {
@@ -132,6 +132,20 @@ export default function AlumniDrawer({
                 {alumni.city}
               </p>
             </div>
+
+            {alumni.phone && (
+              <p className="flex items-center gap-2 font-medium text-gray-900">
+                <Phone size={16} />
+                {alumni.phone}
+              </p>
+            )}
+
+            {alumni.address && (
+              <p className="flex items-center gap-2 font-medium text-gray-900">
+                <MapPin size={16} />
+                {alumni.address}
+              </p>
+            )}
 
             <div>
               <p className="text-sm text-gray-500">
