@@ -20,92 +20,72 @@ export default function EventModal({
   mode,
   selectedEvent,
 }: Props) {
-  const [title, setTitle] = useState(
-    selectedEvent?.title || ""
-  );
-
+  const [title, setTitle] = useState(selectedEvent?.title || "");
 
   const [description, setDescription] = useState(
-    selectedEvent?.description || ""
+    selectedEvent?.description || "",
   );
 
-  const [venue, setVenue] = useState(
-    selectedEvent?.venue || ""
-  );
+  const [venue, setVenue] = useState(selectedEvent?.venue || "");
 
-  const [category, setCategory] = useState(
-    selectedEvent?.category || ""
-  );
+  const [category, setCategory] = useState(selectedEvent?.category || "");
 
-  const [date, setDate] = useState(
-    selectedEvent?.date || ""
-  );
+  const [date, setDate] = useState(selectedEvent?.date || "");
 
-  const [time, setTime] = useState(
-    selectedEvent?.time || ""
-  );
+  const [time, setTime] = useState(selectedEvent?.time || "");
 
   const [registrationLink, setRegistrationLink] = useState(
-    selectedEvent?.registrationLink || ""
+    selectedEvent?.registrationLink || "",
   );
 
-  const [banner, setBanner] = useState(
-  selectedEvent?.banner || ""
-);
+  const [banner, setBanner] = useState(selectedEvent?.banner || "");
 
-const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  const [status, setStatus] = useState(
-  selectedEvent?.status || "UPCOMING"
-);
+  const [status, setStatus] = useState(selectedEvent?.status || "UPCOMING");
 
-  const [featured, setFeatured] = useState(
-    selectedEvent?.featured || false
-  );
+  const [featured, setFeatured] = useState(selectedEvent?.featured || false);
 
-  const handleImageUpload = async (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const file = e.target.files?.[0];
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("file", file);
+    formData.append("file", file);
 
-  setUploading(true);
+    setUploading(true);
 
-  const response = await fetch("/api/upload", {
-    method: "POST",
-    body: formData,
-  });
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  setUploading(false);
+    setUploading(false);
 
-  if (!response.ok) {
-    alert("Image upload failed");
-    return;
-  }
+    if (!response.ok) {
+      alert("Image upload failed");
+      return;
+    }
 
-  setBanner(data.imageUrl);
-};
+    setBanner(data.imageUrl);
+  };
   const handleSubmit = async () => {
-
     if (
-  !title ||
-  !description ||
-  !venue ||
-  !category ||
-  !date ||
-  !time ||
-  !banner
-) {
-  alert("Please complete all required fields.");
-  return;
-}
+      !title ||
+      !description ||
+      !venue ||
+      !category ||
+      !date ||
+      !time ||
+      !banner
+    ) {
+      alert("Please complete all required fields.");
+      return;
+    }
 
     try {
       if (mode === "add") {
@@ -115,16 +95,16 @@ const [uploading, setUploading] = useState(false);
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-              title,
-              description,
-              category,
-              venue,
-              date,
-              time,
-              banner,
-              featured,
-              status,
-            }),
+            title,
+            description,
+            category,
+            venue,
+            date,
+            time,
+            banner,
+            featured,
+            status,
+          }),
         });
 
         if (!response.ok) {
@@ -178,7 +158,10 @@ const [uploading, setUploading] = useState(false);
           </p>
         </div>
 
-        <div className="overflow-y-auto px-8 py-6">
+        <div
+          data-lenis-prevent
+          className="min-h-0 overflow-y-auto overscroll-contain px-8 py-6"
+        >
           <div className="grid grid-cols-2 gap-5">
             <div>
               <label className="mb-2 block font-medium text-gray-700">
@@ -266,31 +249,29 @@ const [uploading, setUploading] = useState(false);
 
             <div>
               <div>
-  <label className="mb-2 block font-medium text-gray-700">
-    Event Banner
-  </label>
+                <label className="mb-2 block font-medium text-gray-700">
+                  Event Banner
+                </label>
 
-  <input
-    type="file"
-    accept="image/*"
-    onChange={handleImageUpload}
-    className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
-  />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
+                />
 
-  {uploading && (
-    <p className="mt-2 text-sm text-blue-600">
-      Uploading...
-    </p>
-  )}
+                {uploading && (
+                  <p className="mt-2 text-sm text-blue-600">Uploading...</p>
+                )}
 
-  {banner && (
-    <img
-      src={banner}
-      alt="Banner Preview"
-      className="mt-3 h-40 w-full rounded-xl object-cover"
-    />
-  )}
-</div>
+                {banner && (
+                  <img
+                    src={banner}
+                    alt="Banner Preview"
+                    className="mt-3 h-40 w-full rounded-xl object-cover"
+                  />
+                )}
+              </div>
             </div>
 
             <div>
