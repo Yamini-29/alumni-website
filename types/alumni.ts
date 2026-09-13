@@ -8,5 +8,7 @@ export interface Alumni {
   linkedin?: string;
   phone?: string;
   address?: string;
+  category?: string;
+  employmentStatus?: string;
   status: "ACTIVE" | "HIDDEN";
 }
