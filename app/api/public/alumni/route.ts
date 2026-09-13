@@ -9,9 +9,28 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const page = numberParam(searchParams.get("page"), 1, 100000);
   const limit = numberParam(searchParams.get("limit"), DEFAULT_LIMIT, MAX_LIMIT);
-  const query = searchParams.get("q")?.trim() ?? "";
+  const q = searchParams.get("q")?.trim() ?? "";
   const batch = searchParams.get("batch")?.trim() ?? "";
-  const where = { status: "ACTIVE" as const, ...(batch ? { batch } : {}), ...(query ? { OR: [{ name: { contains: query, mode: "insensitive" as const } }, { company: { contains: query, mode: "insensitive" as const } }, { city: { contains: query, mode: "insensitive" as const } }] } : {}) };
+  const category = searchParams.get("category")?.trim() ?? "All";
+  const city = searchParams.get("city")?.trim() ?? "";
+  const where = {
+    status: "ACTIVE" as const,
+    ...(q && {
+      OR: [
+        { name: { contains: q, mode: "insensitive" as const } },
+        { company: { contains: q, mode: "insensitive" as const } },
+        { college: { contains: q, mode: "insensitive" as const } },
+      ],
+    }),
+    ...(batch && { batch }),
+    ...(city && {
+      city: {
+        contains: city,
+        mode: "insensitive" as const,
+      },
+    }),
+    ...(category !== "All" && { category }),
+  };
   const [items, total] = await prisma.$transaction([prisma.alumni.findMany({ where, orderBy: { name: "asc" }, skip: (page - 1) * limit, take: limit }), prisma.alumni.count({ where })]);
   return NextResponse.json({ items, page, limit, total, totalPages: Math.max(1, Math.ceil(total / limit)) });
 }

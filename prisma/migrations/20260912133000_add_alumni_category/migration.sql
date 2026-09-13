@@ -1,0 +1,2 @@
+ALTER TABLE "Alumni"
+ADD COLUMN "category" TEXT NOT NULL DEFAULT 'Others';

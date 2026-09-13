@@ -1,15 +1,100 @@
-import { Building2, GraduationCap, MapPin } from "lucide-react";
+import Image from "next/image";
+import {
+  BriefcaseBusiness,
+  Building2,
+  Code2,
+  GraduationCap,
+  MapPin,
+  Stethoscope,
+} from "lucide-react";
 
-type Alumni = { name: string; batch: string; college: string; company: string; city: string };
+interface AlumniCardData {
+  id: string;
+  name: string;
+  batch: string;
+  college: string;
+  company: string;
+  city: string;
+}
 
-export default function AlumniCard({ alumni }: { alumni: Alumni }) {
-  const initials = alumni.name.split(" ").map((part) => part[0]).slice(0, 2).join("");
-  return <article className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_12px_30px_rgba(24,59,122,0.07)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(24,59,122,0.14)]">
-    <div className="flex h-28 items-center justify-center bg-gradient-to-r from-[#183b7a] via-[#244b93] to-[#c218d4]"><span className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-[#d8a11c] text-xl font-bold text-[#183b7a]">{initials}</span></div>
-    <div className="space-y-3 p-5"><div><h3 className="text-lg font-bold text-[#183b7a]">{alumni.name}</h3><p className="text-sm text-slate-500">Class of {alumni.batch}</p></div>
-      <p className="flex gap-2 text-sm text-slate-700"><GraduationCap size={16} className="shrink-0 text-[#c218d4]"/>{alumni.college}</p>
-      {alumni.company && <p className="flex gap-2 text-sm text-slate-700"><Building2 size={16} className="shrink-0 text-[#c218d4]"/>{alumni.company}</p>}
-      <p className="flex gap-2 text-sm text-slate-500"><MapPin size={16} className="shrink-0 text-[#c218d4]"/>{alumni.city}</p>
+const getProfession = (company: string) => {
+  const text = company.toLowerCase();
+
+  if (text.includes("doctor") || text.includes("hospital")) {
+    return { icon: Stethoscope, label: "Doctor" };
+  }
+
+  if (
+    text.includes("software") ||
+    text.includes("google") ||
+    text.includes("microsoft") ||
+    text.includes("gep") ||
+    text.includes("wipro")
+  ) {
+    return { icon: Code2, label: "Engineer" };
+  }
+
+  if (text.includes("professor")) {
+    return { icon: GraduationCap, label: "Academia" };
+  }
+
+  return { icon: BriefcaseBusiness, label: "Professional" };
+};
+
+export default function AlumniCard({ alumni }: { alumni: AlumniCardData }) {
+  const profession = getProfession(alumni.company);
+  const Icon = profession.icon;
+
+  return (
+    <div className="group relative overflow-hidden rounded-[28px] border border-[#E4DCCB] bg-[#FCFBF8] p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_60px_rgba(24,59,122,.12)]">
+
+      {/* Top Glow */}
+      <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-[#D8A11C]/10 blur-3xl" />
+
+      {/* Avatar */}
+      <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-[#FCFBF8] shadow-lg">
+        <Image
+          src="/images/default-avatar.png"
+          alt={alumni.name}
+          fill
+          className="h-full w-full object-cover"
+        />
+      </div>
+
+      {/* Name */}
+      <h3 className="mt-5 text-2xl font-bold text-[#183B7A]">
+        {alumni.name}
+      </h3>
+
+      <p className="mt-1 text-slate-500">
+        Batch of {alumni.batch}
+      </p>
+
+      <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#F7F4ED] px-3 py-1.5 text-sm font-semibold text-[#183B7A]">
+        <Icon size={16} />
+        {profession.label}
+      </div>
+
+      <div className="mt-6 space-y-3 text-sm">
+        <div className="flex gap-3 items-center">
+          <Building2 size={18} className="text-[#183B7A]" />
+          <span className="text-slate-700">{alumni.company}</span>
+        </div>
+
+        <div className="flex gap-3 items-center">
+          <GraduationCap size={18} className="text-[#183B7A]" />
+          <span className="text-slate-700">{alumni.college}</span>
+        </div>
+
+        <div className="flex gap-3 items-center">
+          <MapPin size={18} className="text-[#D8A11C]" />
+          <span className="text-slate-700">{alumni.city}</span>
+        </div>
+      </div>
+
+      {/* <button className="mt-7 w-full rounded-2xl bg-[#183B7A] py-3 font-semibold text-white transition hover:bg-[#122F63]">
+        View Profile
+      </button> */}
     </div>
-  </article>;
+  );
 }

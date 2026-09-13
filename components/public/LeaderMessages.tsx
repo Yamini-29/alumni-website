@@ -6,10 +6,46 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Container from "@/components/layout/Container";
-import { leaders } from "@/data/leaders";
+import { Leader } from "@/types/leadership";
+
+function getSafeImageSource(image: string) {
+  const source = image.trim();
+
+  if (source.startsWith("/")) return source;
+
+  try {
+    new URL(source);
+    return source;
+  } catch {
+    return "/images/chairman.jpg";
+  }
+}
 
 export default function LeaderMessages() {
+  const [leaders, setLeaders] = useState<Leader[]>([]);
   const [current, setCurrent] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaders = async () => {
+      try {
+        const response = await fetch("/api/leadership");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch leadership records");
+        }
+
+        const data: Leader[] = await response.json();
+        setLeaders(data);
+      } catch (error) {
+        console.error("Failed to load leadership records", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLeaders();
+  }, []);
 
   const previous =
     (current - 1 + leaders.length) % leaders.length;
@@ -36,6 +72,8 @@ const goTo = (index: number) => {
 };
 
 const startAutoPlay = () => {
+  if (leaders.length === 0) return;
+
   if (intervalRef.current) clearInterval(intervalRef.current);
 
   intervalRef.current = setInterval(() => {
@@ -53,7 +91,7 @@ useEffect(() => {
   startAutoPlay();
 
   return () => stopAutoPlay();
-}, []);
+}, [leaders.length]);
 
 useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
@@ -67,6 +105,22 @@ useEffect(() => {
   return () =>
     window.removeEventListener("keydown", handleKey);
 }, []);
+
+  if (isLoading) {
+    return (
+      <section className="bg-white py-10">
+        <Container>
+          <p className="text-center text-slate-600">
+            Loading leadership messages...
+          </p>
+        </Container>
+      </section>
+    );
+  }
+
+  if (leaders.length === 0) {
+    return null;
+  }
 
   return (
     <section className="relative overflow-hidden bg-white py-10">
@@ -131,7 +185,7 @@ useEffect(() => {
               <div className="absolute left-0 top-10 z-0 scale-90 opacity-25 blur-[2px]">
 
                 <Image
-                  src={leaders[previous].image}
+                  src={getSafeImageSource(leaders[previous].image)}
                   alt=""
                   width={260}
                   height={340}
@@ -140,17 +194,17 @@ useEffect(() => {
 
               </div>
 
-              {/* <div className="absolute right-0 top-10 z-0 scale-90 opacity-25 blur-[2px]">
+              <div className="absolute right-0 top-10 z-0 scale-90 opacity-25 blur-[2px]">
 
                 <Image
-                    src={leaders[next].image}
+                    src={getSafeImageSource(leaders[next].image)}
                     alt=""
                     width={260}
                     height={340}
                     className="rounded-[30px]"
                 />
 
-                </div> */}
+                </div>
 
               {/* Current */}
 
@@ -183,7 +237,7 @@ useEffect(() => {
                     <div className="relative h-[500px] w-[380px] overflow-hidden rounded-[34px]">
 
                     <Image
-                        src={currentLeader.image}
+                      src={getSafeImageSource(currentLeader.image)}
                         alt={currentLeader.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
