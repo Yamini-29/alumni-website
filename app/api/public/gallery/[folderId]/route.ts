@@ -23,7 +23,7 @@ export async function GET(
     description: "",
     photos: folder.images.map((image) => ({
       id: image.id,
-      url: image.imageUrl,
+      url: image.url,
     })),
   });
 }

@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     eventDate: folder.eventDate,
     coverImage: folder.coverImage,
     description: "",
-    photos: folder.images.map((image) => ({ id: image.id, url: image.imageUrl })),
+    photos: folder.images.map((image) => ({ id: image.id, url: image.url })),
   }));
 
   return NextResponse.json({

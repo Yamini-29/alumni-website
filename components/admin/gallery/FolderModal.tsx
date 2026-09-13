@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Folder as FolderIcon, Upload } from "lucide-react";
 import { GalleryFolder } from "@/types/gallery";
+import { fileToBase64 } from "@/lib/fileToBase64";
 
 interface Props {
   closeModal: () => void;
@@ -39,23 +40,9 @@ export default function FolderModal({
     if (!files.length) return;
 
     try {
-      for (const file of files) {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await fetch("/api/upload/gallery", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Image upload failed");
-        }
-
-        const data: { imageUrl: string } = await response.json();
-        setImages((previous) => [...previous, data.imageUrl]);
-        setCoverImage((previous) => previous || data.imageUrl);
-      }
+      const uploadedImages = await Promise.all(files.map(fileToBase64));
+      setImages((previous) => [...previous, ...uploadedImages]);
+      setCoverImage((previous) => previous || uploadedImages[0]);
     } catch {
       alert("Image upload failed");
     } finally {

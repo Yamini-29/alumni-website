@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Leader } from "@/types/leadership";
+import { fileToBase64 } from "@/lib/fileToBase64";
 
 interface Props {
   leaders: Leader[];
@@ -121,13 +122,16 @@ export default function LeaderModal({
         <div className="grid grid-cols-2 gap-5 p-6">
           <div className="col-span-2">
             <label className="mb-2 block font-medium text-gray-700">
-              Leadership Photo (URL)
+              Leadership Photo
             </label>
 
             <input
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              placeholder="/uploads/chairman.jpg"
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (file) setImage(await fileToBase64(file));
+              }}
               className="w-full rounded-xl border p-3 text-gray-900"
             />
           </div>

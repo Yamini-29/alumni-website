@@ -88,7 +88,7 @@ model Event {
   date        String
   time        String
 
-  banner      String
+  banner      String?
 
   featured    Boolean @default(false)
 
@@ -146,7 +146,7 @@ model GalleryFolder {
 model GalleryImage {
   id        String   @id @default(cuid())
 
-  imageUrl  String
+  url       String
 
   folderId  String
   folder    GalleryFolder @relation(fields: [folderId], references: [id], onDelete: Cascade)

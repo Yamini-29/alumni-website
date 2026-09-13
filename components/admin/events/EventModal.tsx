@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Event } from "@/types/event";
+import { fileToBase64 } from "@/lib/fileToBase64";
 
 interface Props {
   events: Event[];
@@ -40,8 +41,6 @@ export default function EventModal({
 
   const [banner, setBanner] = useState(selectedEvent?.banner || "");
 
-  const [uploading, setUploading] = useState(false);
-
   const [status, setStatus] = useState(selectedEvent?.status || "UPCOMING");
 
   const [featured, setFeatured] = useState(selectedEvent?.featured || false);
@@ -51,27 +50,11 @@ export default function EventModal({
 
     if (!file) return;
 
-    const formData = new FormData();
-
-    formData.append("file", file);
-
-    setUploading(true);
-
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    setUploading(false);
-
-    if (!response.ok) {
-      alert("Image upload failed");
-      return;
+    try {
+      setBanner(await fileToBase64(file));
+    } catch {
+      alert("Image conversion failed");
     }
-
-    setBanner(data.imageUrl);
   };
   const handleSubmit = async () => {
     if (
@@ -259,10 +242,6 @@ export default function EventModal({
                   onChange={handleImageUpload}
                   className="w-full rounded-lg border border-gray-300 p-3 text-gray-900"
                 />
-
-                {uploading && (
-                  <p className="mt-2 text-sm text-blue-600">Uploading...</p>
-                )}
 
                 {banner && (
                   <img

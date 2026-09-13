@@ -24,7 +24,7 @@ export class GalleryService {
       coverImage: folder.coverImage,
       photos: folder.images.map((image) => ({
         id: image.id,
-        url: image.imageUrl,
+        url: image.url,
         uploadedDate: image.createdAt.toISOString(),
       })),
     };
@@ -53,7 +53,7 @@ export class GalleryService {
 
         images: {
           create: data.images.map((img) => ({
-            imageUrl: img,
+            url: img,
           })),
         },
       },
@@ -83,7 +83,7 @@ export class GalleryService {
 
         images: {
           create: data.images.map((img: string) => ({
-            imageUrl: img,
+            url: img,
           })),
         },
       },
