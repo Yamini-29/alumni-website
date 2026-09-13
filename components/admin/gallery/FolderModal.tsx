@@ -19,28 +19,22 @@ export default function FolderModal({
   mode,
   selectedFolder,
 }: Props) {
-  const [eventName, setEventName] = useState(
-    selectedFolder?.eventName || ""
-  );
+  const [eventName, setEventName] = useState(selectedFolder?.eventName || "");
 
-  const [eventDate, setEventDate] = useState(
-    selectedFolder?.eventDate || ""
-  );
+  const [eventDate, setEventDate] = useState(selectedFolder?.eventDate || "");
 
   const [description, setDescription] = useState(
-    selectedFolder?.description || ""
+    selectedFolder?.description || "",
   );
 
   const [images, setImages] = useState<string[]>(
-    selectedFolder?.photos.map((photo) => photo.url) || []
+    selectedFolder?.photos.map((photo) => photo.url) || [],
   );
   const [coverImage, setCoverImage] = useState(
-    selectedFolder?.coverImage || ""
+    selectedFolder?.coverImage || "",
   );
 
-  const handleUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
@@ -125,7 +119,10 @@ export default function FolderModal({
         </div>
 
         {/* Body */}
-        <div className="grid flex-1 overflow-y-auto lg:grid-cols-5">
+        <div
+          data-lenis-prevent
+          className="grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-5"
+        >
           {/* Live Preview */}
           <div className="border-r border-gray-200 bg-gray-50 p-6 lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold text-gray-900">

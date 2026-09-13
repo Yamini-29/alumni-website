@@ -47,36 +47,28 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-sm">
-      {/* Compact brand row — mobile only */}
       <div className="mb-8 flex flex-col items-center gap-3 lg:hidden">
         <div
-          className="flex h-14 w-14 items-center justify-center rounded-full border-2"
-          style={{ backgroundColor: "#101E4A", borderColor: "#C9A227" }}
+          className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#303F9F]"
         >
-          <GraduationCap style={{ color: "#C9A227" }} size={26} />
+          <GraduationCap className="text-white" size={26} />
         </div>
         <div className="text-center">
-          <p className="text-sm font-semibold tracking-wide text-slate-900">
+          <p className="text-sm font-semibold tracking-wide text-slate-700">
             Thamarai International School
           </p>
-          <p className="text-xs text-gray-600">Alumni Admin Portal</p>
+          <p className="text-xs text-slate-500">Alumni Admin Portal</p>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
-        <div
-          className="h-1.5 w-full"
-          style={{
-            background:
-              "linear-gradient(to right, #2F45A0, #9C1F63, #C9A227)",
-          }}
-        />
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="h-1.5 w-full bg-[#C218D4]" />
 
         <div className="p-8 sm:p-10">
-          <h1 className="text-2xl font-semibold text-slate-900">
+          <h1 className="text-2xl font-bold text-gray-700">
             Welcome back
           </h1>
-          <p className="mt-1 text-sm text-gray-600">
+          <p className="mt-1 text-sm text-slate-500">
             Sign in to manage alumni records and outreach.
           </p>
 
@@ -85,14 +77,14 @@ export default function LoginForm() {
               <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Username
               </label>
-              <div className="flex items-center rounded-lg border border-slate-300 bg-white px-3.5 transition focus-within:border-[#2F45A0] focus-within:ring-2 focus-within:ring-[#2F45A0]/15">
-                <User size={17} className="text-gray-500" />
+              <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 transition focus-within:border-[#303F9F] focus-within:ring-2 focus-within:ring-[#303F9F]/15">
+                <User size={17} className="text-slate-400" />
                 <input
                   type="text"
                   placeholder="Enter username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-transparent px-3 py-2.5 text-sm text-grey-900 outline-none placeholder:text-gray-800"
+                  className="w-full bg-transparent px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -101,19 +93,19 @@ export default function LoginForm() {
               <label className="mb-1.5 block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <div className="flex items-center rounded-lg border border-slate-300 bg-white px-3.5 transition focus-within:border-[#2F45A0] focus-within:ring-2 focus-within:ring-[#2F45A0]/15">
-                <Lock size={17} className="text-gray-500" />
+              <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 px-3.5 transition focus-within:border-[#303F9F] focus-within:ring-2 focus-within:ring-[#303F9F]/15">
+                <Lock size={17} className="text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-transparent px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-gray-400"
+                  className="w-full bg-transparent px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-gray-500 transition hover:text-gray-700"
+                  className="text-slate-400 transition hover:text-slate-600"
                 >
                   {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
@@ -128,8 +120,7 @@ export default function LoginForm() {
 
             <button
               disabled={loading}
-              className="flex w-full items-center justify-center rounded-lg py-2.5 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-60"
-              style={{ backgroundColor: "#101E4A" }}
+              className="flex w-full items-center justify-center rounded-xl bg-[#303F9F] py-2.5 text-sm font-semibold text-white transition hover:bg-[#26358b] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <>
