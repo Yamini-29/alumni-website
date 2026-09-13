@@ -142,7 +142,7 @@ export default function Footer() {
               </a>
 
               <Link
-                href="/public/about"
+                href="/"
                 className="block text-white/65 transition hover:text-white"
               >
                 About the alumni network
